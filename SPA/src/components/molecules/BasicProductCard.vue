@@ -1,5 +1,6 @@
 <script setup>
-    import { RouterLink } from 'vue-router'
+    import { ref } from 'vue';
+    import { RouterLink } from 'vue-router';
 
     const props = defineProps({
         product: Object
@@ -12,6 +13,11 @@
         image: String,
         */
     });
+
+    const product = props.product
+    const imageURL = product.image;
+
+    const isImageDefined = ref(imageURL !== undefined);
 </script>
 
 <template>
@@ -21,7 +27,7 @@
                 {{ product.title }}
             </h2>
             <figure>
-                <img :src="product.image" :alt="product.title" class="w-80 h-80" />
+                <img :src="product.image" :alt="product.title" class="w-80 h-80" v-if="isImageDefined"/>
             </figure>
         </RouterLink>
         <div class="card-body p-4">
