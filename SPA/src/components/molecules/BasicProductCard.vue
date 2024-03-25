@@ -26,8 +26,8 @@
             <h2 class="card-title h-24 text-center mx-auto w-fit">
                 {{ product.title }}
             </h2>
-            <figure>
-                <img :src="product.image" :alt="product.title" class="w-80 h-80" v-if="isImageDefined"/>
+            <figure class="w-80 h-80 mx-auto">
+                <img :src="product.image" :alt="product.title" v-if="isImageDefined"/>
             </figure>
         </RouterLink>
         <div class="card-body p-4">
