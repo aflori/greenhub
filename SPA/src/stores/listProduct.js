@@ -38,13 +38,17 @@ function getCorretlyFormatedObject(product) {
             image: String,
         }
     */
+    let image = undefined;
+    if (product.image.length > 0) {
+        image = product.image[0];
+    }
     return {
         id: product.id,
         title: product.name,
         price: product.price.toString() + " €",
         categories: [ product.category ],
         description: product.description,
-        image: "",
+        image: image,
     }
 }
 

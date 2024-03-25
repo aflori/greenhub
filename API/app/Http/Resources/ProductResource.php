@@ -33,6 +33,7 @@ class ProductResource extends JsonResource
             "labels" => $this->getsLabelArray(),
             "categories" => $this->getCategoriesArray(),
             "comments" => $this->getCommentsArray(),
+            "image" => $this->getImagesArray(),
         ];
     }
 
@@ -88,4 +89,11 @@ class ProductResource extends JsonResource
         return $this->brand->name;
     }
 
+    protected function getImagesArray() {
+        $images = $this->images;
+        for($i = 0; $i < count($images); $i++) {
+            $images[$i] = $images[$i]->name;
+        }
+        return $images;
+    }
 }
