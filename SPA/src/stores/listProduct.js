@@ -8,20 +8,31 @@ function getCorretlyFormatedObject(product) {
     /*
         received:
         {
-            id: Number,
-            title: String,
-            price: Number,
-            description: String,
-            category: String,
-            image: String,
-            rating: Object { rate: Number, count: Number }
+            brand: "cupiditate"
+            categories: ["consequatur"]
+            comments: [
+                "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
+                "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
+            ]
+            description: "Est sit eos amet quis. Eum et recusandae accusantium corrupti facere aut dolorem. Officia dolorem optio minus minus iure. Animi corporis nisi nam soluta. Sit consequatur occaecati est error est accusantium. Sint modi ea quia quis molestiae ut tenetur beatae. Totam repellat nulla ex nihil qui. Facere est quia facilis distinctio consequatur ab atque. Rerum officia eos maiores accusamus cupiditate aliquid vitae. Aut magni sint quo. Quo inventore libero necessitatibus id atque illo dolores."
+            discount: null
+            environmental_impact: int ( less than 10, 3)
+            id: String (UUID, "9ba5c5f5-1022-4712-8a15-97669195939e")
+            labels: [ "Tuthemlberg and co." ]
+            measure: "5.5"
+            measuring_unit: "kg"
+            name: "maxime"
+            origin: "ea"
+            price: "34907.93"
+            stock: 1
+            vat_rate: "0.45"
         }
 
         wanted:
         {
-            id: Number,
-            title: String,
-            price: String, //have to convert price from number to string with its currency (€)
+            id: String,
+            title: String, // is name in API
+            price: String,
             categories: Array, //have to make an array containing the received category
             description: String,
             image: String,
@@ -29,11 +40,11 @@ function getCorretlyFormatedObject(product) {
     */
     return {
         id: product.id,
-        title: product.title,
+        title: product.name,
         price: product.price.toString() + " €",
         categories: [ product.category ],
         description: product.description,
-        image: product.image,
+        image: "",
     }
 }
 
@@ -44,11 +55,11 @@ function changeToWantedFormat(requestResult) {
     }
 
     const listProductCorrectlyFormated = {};
-
-    for(let i = 0; i<requestResult.length; i++) {
+    const data = requestResult.data;
+    for(let i = 0; i<data.length; i++) {
         addElement(
             listProductCorrectlyFormated,
-            getCorretlyFormatedObject(requestResult[i])
+            getCorretlyFormatedObject(data[i])
         );
     }
 
