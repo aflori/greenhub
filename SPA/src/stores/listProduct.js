@@ -2,7 +2,7 @@ import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-const apiURL = "https://fakestoreapi.com/products";
+const apiURL = "http://localhost:8000/api/products"
 
 function getCorretlyFormatedObject(product) {
     /*
