@@ -28,6 +28,10 @@ class ProductController extends Controller
         return new ProductCollection($productsListFiltered);
     }
 
+    public function show(Request $request, Product $product) {
+        return new ProductResource($product);
+    }
+
     public function store(Request $request)
     {
         $newProduct = new Product();

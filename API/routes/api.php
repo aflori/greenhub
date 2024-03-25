@@ -32,6 +32,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 // Route::apiResource('products', ProductController::class);
 Route::get('/products', [ProductController::class, "index"]);
+Route::get('/product/{product}', [ProductController::class, "show"]);
 Route::delete('/product/{product}', [ProductController::class, "destroy"]);
 Route::put('/product/{product}', [ProductController::class, "update"]);
 Route::patch('/product/{product}', [ProductController::class, "update"]);
