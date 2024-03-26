@@ -1,8 +1,8 @@
 <script setup>
-    import Logo_greenhub from "@/components/icons/Logo_greenhub.vue";
     import LogoData from "@/components/molecules/LogoData.vue";
     import MenuLink from "@/components/molecules/MenuLink.vue";
     import HeaderBasket from "@/components/molecules/HeaderBasket.vue";
+    import LogoDatas from "@/components/molecules/LogDatas.vue";
 
     // list of redirection element in menue
     const menuLinks = [
@@ -19,7 +19,7 @@
         <div id="logos" class="flex flex-row justify-evenly container">
             <LogoData />
             <!-- <Logo_greenhub class="h-10"/> -->
-            <!-- <Logo_greenhub class="h-10"/> -->
+            <LogoDatas/>
             <HeaderBasket />
         </div>
     </header>
