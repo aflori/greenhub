@@ -4,7 +4,7 @@
     import { useBacketStore } from "@/stores/backet.js";
     import BaketInput from "@/components/molecules/BacketInput.vue";
     function getIdOnGoodType(propsParam) {
-        return Number(propsParam.id);
+        return propsParam.id;
     }
 
     const props = defineProps({
