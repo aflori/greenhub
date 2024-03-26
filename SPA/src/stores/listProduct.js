@@ -46,7 +46,7 @@ function getCorretlyFormatedObject(product) {
         id: product.id,
         title: product.name,
         price: product.price.toString() + " €",
-        categories: [ product.category ],
+        categories: product.categories,
         description: product.description,
         image: image,
     }
