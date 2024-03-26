@@ -39,7 +39,13 @@ class ProductController extends Controller
     }
 
     public function show(Product $product ) {
-        return new ProductResource($product);
+        // for testing purpose:
+        if( auth()->check()) {
+            return new ProductResource($product);
+        }
+        else {
+            return ["error" => "not authorized to get ressource"];
+        }
     }
 
     public function update(EditOrCreateProductRequest $request, Product $product)
