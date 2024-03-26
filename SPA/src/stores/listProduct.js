@@ -78,7 +78,13 @@ async function makeRequestAndRecoverJSON(url) {
 
 }
 function getProductUrl(id) {
-    return apiURL + "/" + id.toString();
+    function removeLastChar(str) {
+        return str.substring(0, str.length - 1);
+    }
+
+    let baseApi = apiURL;
+    baseApi = removeLastChar(baseApi);
+    return baseApi + "/" + id.toString();
 }
 
 export const useProductListStore = defineStore('productList', () => {
@@ -114,8 +120,8 @@ export const useProductListStore = defineStore('productList', () => {
 
         if( productIsntAlreadyStored(product) ) {
             const url = getProductUrl(id);
-            const product = await makeRequestAndRecoverJSON(url);
-
+            let product = await makeRequestAndRecoverJSON(url);
+            product = product.data
             return getCorretlyFormatedObject(product);
         }
 
