@@ -6,30 +6,22 @@ const baseUrl = "http://localhost:8000/"
 
 export const useLoggingStore = defineStore('logging', () => {
     const isLogged = ref(undefined);
-    const name = ref("");
+    const name = ref(null);
 
-    function setName() {
+    function setNameIfLogged() {
         const url = baseUrl + "api/user";
         axios.get(url)
             .then((datas) => {
-                console.log(datas);
+                name.value = datas.data.pseudoname;
+                isLogged.value = true;
             })
-            .catch( (error) => {
-                name.value = undefined;
-                console.log(error);
+            .catch( (_error) => {
+                name.value = null;
+                isLogged.value = false
             });
     }
-    function initLoggedData() {
-        const testIfIsLogUrl = baseUrl + "api/user";
-        axios.get(testIfIsLogUrl).then((_)=>{
-            isLogged.value = true;
-            setName();
-        }).catch((_)=> {
-            isLogged.value = false;
-        })
-    }
 
-    initLoggedData()
+    setNameIfLogged()
 
     async function logIn(email, password) {
 
@@ -41,12 +33,13 @@ export const useLoggingStore = defineStore('logging', () => {
         })
 
         isLogged.value = true;
-        setName();
+        setNameIfLogged();
     }
     function logout(){
         const url = baseUrl + "logout";
         axios.post(url).then((_) =>{
             isLogged.value = false;
+            name.value = null;
         })
     }
     return {isLogged, name, logIn, logout};
