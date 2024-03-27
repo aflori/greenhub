@@ -5,20 +5,33 @@ import { ref } from 'vue';
 const baseUrl = "http://localhost:8000/"
 
 export const useLoggingStore = defineStore('logging', () => {
-    const isLogged = ref(false);
+    const isLogged = ref(undefined);
     const name = ref("");
-    const hasSession = ref(false);
 
-    async function getSession() {
-        const url = baseUrl + "sanctum/csrf-cookie";
-        await axios.get(url);
-        hasSession.value = true;
+    function setName() {
+        const url = baseUrl + "api/user";
+        axios.get(url)
+            .then((datas) => {
+                console.log(datas);
+            })
+            .catch( (error) => {
+                name.value = undefined;
+                console.log(error);
+            });
+    }
+    function initLoggedData() {
+        const testIfIsLogUrl = baseUrl + "api/user";
+        axios.get(testIfIsLogUrl).then((_)=>{
+            isLogged.value = true;
+            setName();
+        }).catch((_)=> {
+            isLogged.value = false;
+        })
     }
 
+    initLoggedData()
+
     async function logIn(email, password) {
-        if(! hasSession.value ){
-            await getSession()
-        }
 
         const url = baseUrl + "login";
 
@@ -27,8 +40,8 @@ export const useLoggingStore = defineStore('logging', () => {
             'password': password,
         })
 
-        name.value = email;
         isLogged.value = true;
+        setName();
     }
     function logout(){
         const url = baseUrl + "logout";
@@ -36,5 +49,5 @@ export const useLoggingStore = defineStore('logging', () => {
             isLogged.value = false;
         })
     }
-    return {isLogged, name, getSession, logIn, logout};
+    return {isLogged, name, logIn, logout};
 })
