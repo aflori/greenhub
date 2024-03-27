@@ -24,7 +24,7 @@ class ProductController extends Controller
         $filterAction($query, $filteringField);
 
         $productsListFiltered = $query->get();
-        // $productsListFiltered = $query->first();
+
         return new ProductCollection($productsListFiltered);
     }
 
@@ -39,13 +39,7 @@ class ProductController extends Controller
     }
 
     public function show(Product $product ) {
-        // for testing purpose:
-        if( auth()->check()) {
-            return new ProductResource($product);
-        }
-        else {
-            return ["error" => "not authorized to get ressource"];
-        }
+        return new ProductResource($product);
     }
 
     public function update(EditOrCreateProductRequest $request, Product $product)
