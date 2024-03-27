@@ -1,6 +1,6 @@
 <script setup>
     import LogIn from "@/components/logComponents/LogIn.vue";
-    import LogOut from "@/components/icons/Sign_out_squre.vue";
+    import LogOut from "@/components/logComponents/LogOut.vue";
 
     import { useLoggingStore } from "@/stores/loggin.js";
 
@@ -8,6 +8,6 @@
 </script>
 
 <template>
-    <LogOut class="h-14 w-14 my-auto" v-if="myStore.isLogged" />
-    <LogIn v-else />
+    <LogOut class="my-auto" v-if="myStore.isLogged" />
+    <LogIn class="my-auto" v-else />
 </template>
