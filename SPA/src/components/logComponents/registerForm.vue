@@ -64,11 +64,11 @@
         logData
          .register(fieldValue)
          .then((_) => {
-            console.log("OK!");
-            //returnToHome(); 
+            // console.log("OK!");
+            returnToHome(); 
          })
          .catch((error_) => {
-             console.log( error_);
+             console.log( error_.response);
          });
     }
 
