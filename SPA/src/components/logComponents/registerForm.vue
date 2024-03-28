@@ -1,7 +1,7 @@
 <script setup>
     import { useLoggingStore } from "@/stores/loggin.js"
     // import { useRouter } from 'vue-router'
-    import { ref } from 'vue'
+    import { ref, computed } from 'vue'
 
     /*
     const router = useRouter()
@@ -21,7 +21,9 @@
     const password = ref("");
     const passwordConfirmed = ref("");
 
-
+    const errorMessage = computed(() => {
+        return "";
+    });
 </script>
 
 <template>
@@ -44,16 +46,20 @@
         </label>
         <label class="input input-bordered flex items-center gap-2">
             confirmer l'adresse mail:
-            <input type="email" class="grow" placeholder="exemple@exemple.com" v-model="emailConfirme" @paste.prevent />
+            <input type="email" class="grow" placeholder="exemple@exemple.com" v-model="emailConfirmed" @paste.prevent />
         </label>
         <label class="input input-bordered flex items-center gap-2">
             mot de passe:
             <input type="password" class="grow" v-model="password" />
         </label>
         <label class="input input-bordered flex items-center gap-2">
-            confirmer le mail:
+            confirmer le mot de passe:
             <input type="password" class="grow" v-model="passwordConfirmed" @paste.prevent />
         </label>
+
+        <div :class="{'tooltip': errorMessage!='',  'tooltip-right': true,  'max-lg:tooltip-open': true}" :data-tip="errorMessage">
+            <button class="btn" @click.prevent > Créer un compte </button>
+        </div>
     </form>
 </template>
 
