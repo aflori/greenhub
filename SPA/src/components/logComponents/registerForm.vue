@@ -1,7 +1,7 @@
 <script setup>
     import { useLoggingStore } from "@/stores/loggin.js"
     // import { useRouter } from 'vue-router'
-    import { ref, computed } from 'vue'
+    import { ref, reactive, computed } from 'vue'
 
     /*
     const router = useRouter()
@@ -13,15 +13,35 @@
     const logData = useLoggingStore();
 
 
-    const firstName = ref("");
-    const lastName = ref("");
-    const pseudoname = ref("");
-    const email = ref("");
-    const emailConfirmed = ref("");
-    const password = ref("");
-    const passwordConfirmed = ref("");
+    const fieldValue = reactive({
+        firstName: "",
+        lastName: "",
+        pseudoname: "",
+        email: "",
+        emailConfirmed: "",
+        password: "",
+        passwordConfirmed: ""
+    });
 
     const errorMessage = computed(() => {
+        function isInObject(value, object_) {
+            return Object.values(object_).includes(value);
+        }
+
+
+        if ( isInObject("", fieldValue)) {
+            return "Tous les champs du formulaire doivent être remplis"
+        }
+
+        if (fieldValue.email !== fieldValue.emailConfirmed) {
+            return "les 2 adresses mails doivent être identiques"
+        }
+
+        if (fieldValue.password !== fieldValue.passwordConfirmed) {
+            return "les mots de passe ne sont pas identiques"
+        }
+
+
         return "";
     });
 </script>
@@ -30,31 +50,31 @@
     <form class="max-w-96">
         <label class="input input-bordered flex items-center gap-2">
             prénom:
-            <input type="text" class="grow" placeholder="Jhon" v-model="firstName" />
+            <input type="text" class="grow" placeholder="Jhon" v-model="fieldValue.firstName" />
         </label>
         <label class="input input-bordered flex items-center gap-2">
             nom:
-            <input type="text" class="grow" placeholder="Doe" v-model="lastName" />
+            <input type="text" class="grow" placeholder="Doe" v-model="fieldValue.lastName" />
         </label>
         <label class="input input-bordered flex items-center gap-2">
             pseudoname:
-            <input type="text" class="grow" placeholder="doigt" v-model="pseudoname" />
+            <input type="text" class="grow" placeholder="doigt" v-model="fieldValue.pseudoname" />
         </label>
         <label class="input input-bordered flex items-center gap-2">
             mail:
-            <input type="email" class="grow" placeholder="exemple@exemple.com" v-model="email" />
+            <input type="email" class="grow" placeholder="exemple@exemple.com" v-model="fieldValue.email" />
         </label>
         <label class="input input-bordered flex items-center gap-2">
             confirmer l'adresse mail:
-            <input type="email" class="grow" placeholder="exemple@exemple.com" v-model="emailConfirmed" @paste.prevent />
+            <input type="email" class="grow" placeholder="exemple@exemple.com" v-model="fieldValue.emailConfirmed" @paste.prevent />
         </label>
         <label class="input input-bordered flex items-center gap-2">
             mot de passe:
-            <input type="password" class="grow" v-model="password" />
+            <input type="password" class="grow" v-model="fieldValue.password" />
         </label>
         <label class="input input-bordered flex items-center gap-2">
             confirmer le mot de passe:
-            <input type="password" class="grow" v-model="passwordConfirmed" @paste.prevent />
+            <input type="password" class="grow" v-model="fieldValue.passwordConfirmed" @paste.prevent />
         </label>
 
         <div :class="{'tooltip': errorMessage!='',  'tooltip-right': true,  'max-lg:tooltip-open': true}" :data-tip="errorMessage">

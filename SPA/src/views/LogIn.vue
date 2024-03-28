@@ -27,7 +27,7 @@
         <RegisterForm v-else />
 
         <a @click.prevent="changeForm"> {{ textFormSwitch }}</a>
-   </main>
+    </main>
 </template>
 
 <style scoped>
