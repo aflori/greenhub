@@ -10,5 +10,6 @@
 <template>
     <router-link :to="{name: 'log_in'}" class="my-auto">
         <LogOut class="h-14 w-14" @click="logConnectionStore.logout"/>
+        <p v-if="logConnectionStore.name != null" class="text-neutral text-center"> {{ logConnectionStore.name }} </p>
     </ router-link>
 </template>
