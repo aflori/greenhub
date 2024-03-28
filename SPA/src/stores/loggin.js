@@ -42,5 +42,9 @@ export const useLoggingStore = defineStore('logging', () => {
             name.value = null;
         })
     }
-    return {isLogged, name, logIn, logout};
+
+    async function register(datas) {
+        throw 'a';
+    }
+    return {isLogged, name, logIn, logout, register};
 })

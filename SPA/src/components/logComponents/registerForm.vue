@@ -1,15 +1,16 @@
 <script setup>
-    import { useLoggingStore } from "@/stores/loggin.js"
+    import { useLoggingStore } from "@/stores/loggin.js";
     // import { useRouter } from 'vue-router'
-    import { ref, reactive, computed } from 'vue'
+    import { ref, reactive, computed } from 'vue';
 
-    /*
-    const router = useRouter()
+    import { useRouter } from 'vue-router';
+
+    const router = useRouter();
 
     function returnToHome() {
-        router.push({name: "home"})
-    }
-    */
+        router.push({name: "home"});
+    };
+
     const logData = useLoggingStore();
 
 
@@ -30,36 +31,47 @@
 
 
         if ( isInObject("", fieldValue)) {
-            return "Tous les champs du formulaire doivent être remplis"
+            return "Tous les champs du formulaire doivent être remplis";
         }
 
         if (fieldValue.email !== fieldValue.emailConfirmed) {
-            return "les 2 adresses mails doivent être identiques"
+            return "les 2 adresses mails doivent être identiques";
         }
 
         if (fieldValue.password !== fieldValue.passwordConfirmed) {
-            return "les mots de passe ne sont pas identiques"
+            return "les mots de passe ne sont pas identiques";
         }
 
         if ( fieldValue.firstName.length >= 255 ) {
-            return "le prénom est trop long"
+            return "le prénom est trop long";
         }
 
         if ( fieldValue.lastName.length >= 255 ) {
-            return "le nom est trop long"
+            return "le nom est trop long";
         }
 
         if ( fieldValue.email.length >= 255 ) {
-            return "l'adresse mail est trop long"
+            return "l'adresse mail est trop long";
         }
 
         if (fieldValue.pseudoname.length >= 50 ) {
-            return "le pseudo est trop long"
+            return "le pseudo est trop long";
         }
-
 
         return "";
     });
+    function register() {
+        logData
+         .register(fieldValue)
+         .then((_) => {
+            console.log("OK!");
+            //returnToHome(); 
+         })
+         .catch((error_) => {
+             console.log( error_);
+         });
+    }
+
 </script>
 
 <template>
@@ -94,7 +106,7 @@
         </label>
 
         <div :class="{'tooltip': errorMessage!='',  'tooltip-right': true,  'max-lg:tooltip-open': true}" :data-tip="errorMessage">
-            <button class="btn" @click.prevent > Créer un compte </button>
+            <button class="btn" @click.prevent="register" :disabled="errorMessage!=''"> Créer un compte </button>
         </div>
     </form>
 </template>
