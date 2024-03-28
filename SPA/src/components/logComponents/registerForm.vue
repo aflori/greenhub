@@ -41,6 +41,22 @@
             return "les mots de passe ne sont pas identiques"
         }
 
+        if ( fieldValue.firstName.length >= 255 ) {
+            return "le prénom est trop long"
+        }
+
+        if ( fieldValue.lastName.length >= 255 ) {
+            return "le nom est trop long"
+        }
+
+        if ( fieldValue.email.length >= 255 ) {
+            return "l'adresse mail est trop long"
+        }
+
+        if (fieldValue.pseudoname.length >= 50 ) {
+            return "le pseudo est trop long"
+        }
+
 
         return "";
     });
@@ -57,7 +73,7 @@
             <input type="text" class="grow" placeholder="Doe" v-model="fieldValue.lastName" />
         </label>
         <label class="input input-bordered flex items-center gap-2">
-            pseudoname:
+            pseudo:
             <input type="text" class="grow" placeholder="doigt" v-model="fieldValue.pseudoname" />
         </label>
         <label class="input input-bordered flex items-center gap-2">
