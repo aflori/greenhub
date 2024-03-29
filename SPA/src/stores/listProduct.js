@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, reactive } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
@@ -70,9 +70,9 @@ function changeToWantedFormat(requestResult) {
     return listProductCorrectlyFormated
 }
 
-async function makeRequestAndRecoverJSON(url) {
+async function makeRequestAndRecoverJSON(url, filters) {
 
-    const result = await axios.get(url);
+    const result = await axios.get(url, { params: filters});
     const json = result.data;
     return json;
 
@@ -90,9 +90,10 @@ function getProductUrl(id) {
 export const useProductListStore = defineStore('productList', () => {
 
     const products = ref({});
+    const filters = reactive({});
 
     async function load() {
-        const productList = await makeRequestAndRecoverJSON(apiURL)
+        const productList = await makeRequestAndRecoverJSON(apiURL, filters)
 
         products.value = changeToWantedFormat(productList);
     };
