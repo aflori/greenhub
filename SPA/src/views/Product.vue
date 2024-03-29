@@ -1,5 +1,5 @@
 <script setup>
-    import { defineProps, ref } from "vue";
+    import { ref } from "vue";
     import { useProductListStore } from "@/stores/listProduct.js";
     import { useBacketStore } from "@/stores/backet.js";
     import BaketInput from "@/components/molecules/BacketInput.vue";

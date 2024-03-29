@@ -1,5 +1,5 @@
 <script setup>
-    import { defineProps, ref, computed } from "vue";
+    import { ref, computed } from "vue";
     import AddIcon from "@/components/icons/Add_icon.vue";
     import SubIcon from "@/components/icons/LessIcon.vue";
     import DeleteIcon from "@/components/icons/Trash.vue";

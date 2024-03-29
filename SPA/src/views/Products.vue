@@ -3,11 +3,9 @@
     import BasicProductCard from "@/components/molecules/BasicProductCard.vue";
     import FilterCard from "@/components/products/filterField.vue"
     import { useProductListStore } from "@/stores/listProduct.js";
-    import { storeToRefs } from 'pinia';
-    
+
     const listProduct = useProductListStore();
-    // watch(list.products, (oldV, newV) => console.log(oldV, newV))
-    
+
     listProduct.load()
 </script>
 

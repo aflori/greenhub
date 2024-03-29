@@ -1,6 +1,6 @@
 <script setup>
     import { useBacketStore } from "@/stores/backet.js";
-    import { ref, defineEmits } from 'vue';
+    import { ref } from 'vue';
     import BacketLine from "./BacketElementInArray.vue";
 
     // const emits = defineEmits([ "nextStep" ]);]);

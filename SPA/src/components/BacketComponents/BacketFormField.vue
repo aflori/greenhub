@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, defineProps } from 'vue';
+    import { ref } from 'vue';
     import { useFormStore } from "@/stores/form.js";
 
     const props = defineProps({
