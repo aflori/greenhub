@@ -98,6 +98,11 @@ export const useProductListStore = defineStore('productList', () => {
         products.value = changeToWantedFormat(productList);
     };
 
+    function changeFilter(filterName, newValue) {
+        filters[filterName] = newValue;
+        load();
+    }
+
     function getProducts() {
         function objectIsEmpty(o) {
             return Object.keys(o).length === 0
@@ -129,5 +134,5 @@ export const useProductListStore = defineStore('productList', () => {
         return products.value[id];
     }
 
-    return { products, load, getProducts, getSingleProduct };
+    return { products, load, getProducts, getSingleProduct, filters, changeFilter };
 })
