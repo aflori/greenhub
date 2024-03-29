@@ -1,9 +1,9 @@
 <script setup>
-    import { ref } from 'vue';
+    import { ref, computed } from 'vue';
     import { RouterLink } from 'vue-router';
 
-    const props = defineProps({
-        product: Object
+    const props = defineProps([
+        'product',//: Object
         /* contains:
         id: Number,
         title: String,
@@ -12,29 +12,27 @@
         description: String,
         image: String,
         */
-    });
+    ]);
 
-    const product = props.product
-    const imageURL = product.image;
 
-    const isImageDefined = ref(imageURL !== undefined);
+    const isImageDefined = computed(() => props.product.image !== undefined);
 </script>
 
 <template>
     <div class="card w-96 bg-base-100 shadow-xl p-4 m-2 bg-primary w-80 mx-4 min-mx-2">
-        <RouterLink :to="{name: 'product', params: {id: product.id}}" class="">
+        <RouterLink :to="{name: 'product', params: {id: props.product.id}}" class="">
             <h2 class="card-title h-24 text-center mx-auto w-fit">
-                {{ product.title }}
+                {{ props.product.title }}
             </h2>
             <figure class="w-80 h-80 mx-auto">
-                <img :src="product.image" :alt="product.title" v-if="isImageDefined"/>
+                <img :src="props.product.image" :alt="props.product.title" v-if="isImageDefined"/>
             </figure>
         </RouterLink>
         <div class="card-body p-4">
-            <p class="leading-6">{{ product.description }}</p>
+            <p class="leading-6">{{ props.product.description }}</p>
             <div class="card-actions justify-end flex">
-                <p>{{product.price}}</p>
-                <div class="badge badge-outline" v-for="category in product.categories">{{category}}</div>
+                <p>{{props.product.price}}</p>
+                <div class="badge badge-outline" v-for="category in props.product.categories"> {{ category }}</div>
             </div>
         </div>
     </div>
