@@ -15,13 +15,13 @@
 
 
     const fieldValue = reactive({
-        firstName: "",
-        lastName: "",
-        pseudoname: "",
-        email: "",
-        emailConfirmed: "",
-        password: "",
-        passwordConfirmed: ""
+        firstName: "Jhon",
+        lastName: "Doe",
+        pseudoname: "JDHO",
+        email: "j@d.ho",
+        emailConfirmed: "j@d.ho",
+        password: "abcdefgh",
+        passwordConfirmed: "abcdefgh"
     });
 
     const errorMessage = computed(() => {
@@ -58,6 +58,10 @@
             return "le pseudo est trop long";
         }
 
+        if (fieldValue.password.length < 8) {
+            return "Le mot de passe doit faire au moins 8 charactères"
+        }
+
         return "";
     });
     function register() {
@@ -68,7 +72,8 @@
             returnToHome(); 
          })
          .catch((error_) => {
-             console.log( error_.response);
+             console.log( error_ );
+             // console.log( error_.response.data);
          });
     }
 

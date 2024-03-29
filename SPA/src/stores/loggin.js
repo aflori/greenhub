@@ -46,13 +46,14 @@ export const useLoggingStore = defineStore('logging', () => {
     async function register(datas) {
         const url = baseUrl + "register";
         await axios.post(url, {
-            first_name: datas.firstName,
-            last_name: datas.lastName,
-            pseudoname: datas.pseudoname,
-            email: datas.email,
-            password: datas.password,
+            'first_name': datas.firstName,
+            'last_name': datas.lastName,
+            'pseudoname': datas.pseudoname,
+            'email': datas.email,
+            'password': datas.password,
+            'password_confirmation': datas.passwordConfirmed,
         });
-        isLogged = true;
+        isLogged.value = true;
         setNameIfLogged();
     }
     return {isLogged, name, logIn, logout, register};
