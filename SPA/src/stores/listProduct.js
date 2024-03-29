@@ -1,4 +1,4 @@
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
@@ -52,23 +52,6 @@ function getCorretlyFormatedObject(product) {
     }
 }
 
-function changeToWantedFormat(requestResult) {
-
-    function addElement(baseStructure, newElement) {
-        baseStructure[newElement.id] = newElement;
-    }
-
-    const listProductCorrectlyFormated = {};
-    const data = requestResult.data;
-    for(let i = 0; i<data.length; i++) {
-        addElement(
-            listProductCorrectlyFormated,
-            getCorretlyFormatedObject(data[i])
-        );
-    }
-
-    return listProductCorrectlyFormated
-}
 
 async function makeRequestAndRecoverJSON(url, filters) {
 
@@ -89,13 +72,19 @@ function getProductUrl(id) {
 
 export const useProductListStore = defineStore('productList', () => {
 
-    const products = ref({});
+    //const products = ref(null);
     const filters = reactive({});
+    const raw_data = ref(null);
+
+    const products = computed( () => {
+        if (raw_data.value === null) {
+            return [];
+        }
+        return raw_data.value.data.map( getCorretlyFormatedObject );
+    });
 
     async function load() {
-        const productList = await makeRequestAndRecoverJSON(apiURL, filters)
-
-        products.value = changeToWantedFormat(productList);
+        raw_data.value = await makeRequestAndRecoverJSON(apiURL, filters)
     };
 
     function changeFilter(filterName, newValue) {
@@ -103,36 +92,19 @@ export const useProductListStore = defineStore('productList', () => {
         load();
     }
 
-    function getProducts() {
-        function objectIsEmpty(o) {
-            return Object.keys(o).length === 0
-        }
-
-
-        if(objectIsEmpty(products.value)) {
-            load();
-        }
-
-        return products;
-    };
-
     async function getSingleProduct(id) {
 
-        function productIsntAlreadyStored(product) {
-            return product === undefined;
-        }
-
-        let product = products.value[id];
-
-        if( productIsntAlreadyStored(product) ) {
-            const url = getProductUrl(id);
-            let product = await makeRequestAndRecoverJSON(url);
-            product = product.data
-            return getCorretlyFormatedObject(product);
-        }
-
-        return products.value[id];
+        const url = getProductUrl(id);
+        let product = await makeRequestAndRecoverJSON(url);
+        product = product.data
+        return getCorretlyFormatedObject(product);
     }
 
-    return { products, load, getProducts, getSingleProduct, filters, changeFilter };
+    function loadOnlyOnce() {
+        if (products.value == {}) {
+            load();
+        }
+    }
+    // load()
+    return { products, load, getSingleProduct, filters, changeFilter, loadOnlyOnce, raw_data };
 })
