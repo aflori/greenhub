@@ -30,6 +30,8 @@
         backetStore.addProduct(product.value, numberOfProduct.value);
         numberOfProduct.value = 1;
     }
+
+
 </script>
 
 <template>
@@ -49,6 +51,12 @@
                     <button class="btn btn-primary" @click="moveToBracket">Acheter</button>
                 </div>
             </div>
+        </div>
+        <div>
+            <h3> Publier un commentaire </h3>
+            <textarea class="textarea w-80" placeholder="Bio"></textarea>
+            <br>
+            <button class="btn"> Publier </button>
         </div>
     </main>
 </template>
