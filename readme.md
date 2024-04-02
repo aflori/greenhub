@@ -56,14 +56,3 @@ The API might allow to
 - have an authentificated user see the history of its order
 - have an admin see the history of all the previous made order
 
-### documentation
-
-- API GET - "URL/api/products"
-Return the list of all available products.
-Also via parameter, allow to filter or sort products.
-cf. ?category="toto" -> filter products if one of the product's categories is named "toto".
-cf. ?label="toto" -> filter products if one of the product's labels is named "toto".
-cf. ?brand="toto" -> filter products if one of the product's brands is named "toto".
-cf. ?name="toto" -> filter products by name containing "toto".
-cf. ?discount=0/1 -> filter products if containing a discount.
-cf. ?environmentImpact=0-9 -> filter products by environmental impact (minimum value in argument) // also sort by level of indicator
