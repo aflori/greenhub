@@ -78,7 +78,8 @@ class ProductController extends Controller
     }
 
     public function comment(Request $request, Product $product) {
-        return ["comment" => "created"];
+        $comment = $request->post("comment");
+        return ["comment" => $comment];
     }
 }
 
