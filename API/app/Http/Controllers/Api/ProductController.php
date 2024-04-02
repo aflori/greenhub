@@ -15,6 +15,12 @@ use App\Http\Resources\ProductCollection;
 
 class ProductController extends Controller
 {
+    /**
+     * show all products
+     *
+     *  the endpoints is made to send back all available products. It can optionnally take in parammetter filtering parammeters
+     */
+
     public function index(CategoriesFilterRequest $request)
     {
         $query = Product::query();
