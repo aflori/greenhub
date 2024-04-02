@@ -105,6 +105,18 @@ export const useProductListStore = defineStore('productList', () => {
             load();
         }
     }
+    function publishComment(productId, comment) {
+        const url = getProductUrl(productId) + '/comment';
+
+        axios.post(url, {comment}).then( (response) => {
+            console.log("success!");
+            console.log(response.data);
+        }).catch((response) => {
+            console.log("error");
+            console.log(response.response);
+        })
+    }
     // load()
-    return { products, load, getSingleProduct, filters, changeFilter, loadOnlyOnce, raw_data };
+    return { products, load, getSingleProduct, filters, changeFilter, loadOnlyOnce, 
+        raw_data, publishComment };
 })

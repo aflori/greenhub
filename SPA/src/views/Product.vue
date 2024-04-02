@@ -31,6 +31,10 @@
         numberOfProduct.value = 1;
     }
 
+    const commentContent = ref("");
+    function publishComment() {
+        productStore.publishComment(props.id, commentContent.value);
+    }
 
 </script>
 
@@ -54,9 +58,11 @@
         </div>
         <div>
             <h3> Publier un commentaire </h3>
-            <textarea class="textarea w-80" placeholder="Bio"></textarea>
-            <br>
-            <button class="btn"> Publier </button>
+            <form>
+                <textarea class="textarea textarea-bordered w-80" placeholder="Bio" v-model="commentContent"></textarea>
+                <br>
+                <button class="btn" @click.prevent="publishComment"> Publier </button>
+            </form>
         </div>
     </main>
 </template>

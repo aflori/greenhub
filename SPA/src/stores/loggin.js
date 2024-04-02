@@ -10,6 +10,8 @@ export const useLoggingStore = defineStore('logging', () => {
 
     function setNameIfLogged() {
         const url = baseUrl + "api/user";
+        // axios.get(baseUrl + "sanctum/csrf-cookie");
+
         axios.get(url)
             .then((datas) => {
                 name.value = datas.data.pseudoname;
