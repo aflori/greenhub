@@ -36,7 +36,7 @@ class CategoriesFilterRequest extends FormRequest
             "discount" => "nullable|boolean",
             // values are maxed at 9 because of seeder but must be maxed at 5 later
             "environmentImpact" => "nullable|missing_with:rating|numeric|max:9|min:0",
-            //removed as this one need some products table changes
+            //removed as this one need some database change
             // "rating" => "nullable|missing_with:environmentImpact|numeric|max:9|min:0",
         ];
     }
