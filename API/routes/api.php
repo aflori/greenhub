@@ -33,7 +33,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 // Route::apiResource('products', ProductController::class);
 Route::get('/products', [ProductController::class, "index"]);
 Route::apiResource("product", ProductController::class)->except("index");
-Route::post('/product/{product}/comment', [ProductController::class, "comment"])->middleware("auth");
+
+Route::post('/product/{product}/comment', [ProductController::class, "comment"])->middleware('auth:sanctum');
 
 Route::apiResource('users', UserController::class);
 Route::apiResource('articles', BlogArticleController::class);
