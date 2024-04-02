@@ -34,7 +34,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::get('/products', [ProductController::class, "index"]);
 Route::apiResource("product", ProductController::class)->except("index");
 
-Route::post('/product/{product}/comment', [ProductController::class, "comment"])->middleware('auth:sanctum');
+Route::post('/product/{product}/comment', [ProductController::class, "comment"])->middleware(['auth:sanctum', 'XSS']);
 
 Route::apiResource('users', UserController::class);
 Route::apiResource('articles', BlogArticleController::class);
