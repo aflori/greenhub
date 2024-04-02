@@ -77,6 +77,9 @@ class ProductController extends Controller
         return $product;
     }
 
+    public function comment(Request $request, Product $product) {
+        return ["comment" => "created"];
+    }
 }
 
 function cleanRelation(Product $product, array $fieldToDetach, array $fieldToDelete ){
