@@ -1,11 +1,11 @@
 <script setup>
     import { useBacketStore } from "@/stores/backet.js";
     import { ref } from 'vue';
-    import BacketLine from "./BacketElementInArray.vue";
+    import CartLine from "./CartElementInArray.vue";
 
     // const emits = defineEmits([ "nextStep" ]);]);
 
-    const backetData = useBacketStore();
+    const cartData = useBacketStore();
 
 </script>
 
@@ -22,12 +22,12 @@
               </tr>
             </thead>
 
-            <BacketLine :products="product" v-for="product in backetData.listProductInBacket"/>
+            <CartLine :products="product" v-for="product in cartData.listProductInBacket"/>
 
         </table>
         <hr>
         <div>
-            <strong> total: {{ backetData.totalPrice }} €</strong>
+            <strong> total: {{ cartData.totalPrice }} €</strong>
         </div>
         <button class="btn" @click="$emit('next-step')"> Confirmer la sélection </button>
     </div>

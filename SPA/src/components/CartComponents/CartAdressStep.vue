@@ -1,7 +1,7 @@
 <script setup>
     import { ref } from 'vue';
     import { useFormStore } from "@/stores/form.js";
-    import FormField from "./BacketFormField.vue";
+    import FormField from "./CartFormField.vue";
 
     const canSubmitForm = ref(false);
     const emit = defineEmits([ 'next-step' ]);

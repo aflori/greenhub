@@ -3,7 +3,7 @@
     import { useFormStore } from "@/stores/form.js";
 
     const props = defineProps({
-        key: String,
+        keyO: String,
         form: String,
     });
 

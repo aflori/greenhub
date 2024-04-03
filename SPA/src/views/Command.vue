@@ -1,8 +1,8 @@
 <script setup>
     import { ref } from 'vue';
-    import ListElement from "@/components/BacketComponents/BacketPosition.vue";
-    import BacketComposition from "@/components/BacketComponents/BacketComposition.vue";
-    import BacketAdressStep from "@/components/BacketComponents/BacketAdressStep.vue";
+    import ListElement from "@/components/CartComponents/CartPosition.vue";
+    import BacketComposition from "@/components/CartComponents/CartComposition.vue";
+    import BacketAdressStep from "@/components/CartComponents/CartAdressStep.vue";
 
     const position = ref(1);
     const texts = [
