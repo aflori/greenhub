@@ -37,7 +37,7 @@ export const useFormStore = defineStore('formStore', {
             adress: {
                 type: "text",
                 value: "",
-                label: "adresse postal",
+                label: "adresse",
             },
             city: {
                 type: "text",
@@ -64,30 +64,37 @@ export const useFormStore = defineStore('formStore', {
     getters: {
         isAdressFormValid: (state) => {
             const validations = {
-                firstName:   /^[a-zA-z-]+$/,
-                lastName:    /^$/,
-                gender:      /^$/,
-                adress:      /^$/,
-                city:        /^$/,
-                zipCode:     /^$/,
-                country:     /^$/,
-                phoneNumber: /^$/,
+                // flag u allow myself to check all letters (not only ASCCI, per exemple 'é' included)
+                // flag g is for considering character of other language (such as korean)
+                firstName:   /^[\p{L}-]+$/ug,
+                lastName:    /^(de )?[\p{L}-]+$/ug,
+                gender:      /^[FM]$/,
+                adress:      /^(\d+)([\p{L} -]+)$/ug,
+                city:        /^[\p{L}]+$/ug,
+                zipCode:     /^[A-Z0-9 \-]{3,}$/, // generic regex to avoid complicated one depending of country
+                country:     /^[\p{L}-]+$/ug,
+                phoneNumber: /^[0-9 \+\-]+$/,
             }
 
-            for (const fieldName in validations) {
-
-                //I want the value and not the ref proxy, so i use the .value
-                const valueTested = state.adressDelivery[fieldName].value;
-                const regExpr = validations[fieldName];
-
-                if (!valueTested.match(regExpr)) {
-                    return false;
-                }
-            }
-
-            return true;
+            return validate(state.adressDelivery, validations);
         }
     },
     actions: {
     }
 });
+
+function validate(input, validationRules) {
+    for (const fieldName in validationRules) {
+
+        //I want the value and not the ref proxy, so i use the .value
+        const valueTested = input[fieldName].value;
+        const regExpr = validationRules[fieldName];
+
+        if (!valueTested.match(regExpr)) {
+            return false;
+        }
+    }
+
+    return true;
+
+}
