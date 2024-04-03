@@ -30,7 +30,7 @@ const router = createRouter({
         component: LogIn
     },
     {
-        path: '/command',
+        path: '/panier',
         name: 'command',
         component: Command
     },

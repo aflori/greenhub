@@ -16,7 +16,7 @@
 <template>
     <main>
         <BacketComposition @next-step="position++" v-if="position===1" />
-        <BacketAdressStep  @next-step="position++" @prev-step="position--" v-else-if="position==2" />
+        <BacketAdressStep  @next-step="position++" @prev-step="position--" v-else-if="position===2" />
         <ul class="steps steps-vertical lg:steps-horizontal">
             <ListElement :text="text" :stepNumber="index+1" :position="position" v-for="(text,index) in texts"/>
         </ul>

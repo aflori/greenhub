@@ -1,11 +1,11 @@
 <script setup>
-    import { useBacketStore } from "@/stores/backet.js";
+    import { useCartStore } from "@/stores/cart.js";
     import { ref } from 'vue';
     import CartLine from "./CartElementInArray.vue";
 
     // const emits = defineEmits([ "nextStep" ]);]);
 
-    const cartData = useBacketStore();
+    const cartData = useCartStore();
 
 </script>
 
@@ -22,7 +22,7 @@
               </tr>
             </thead>
 
-            <CartLine :products="product" v-for="product in cartData.listProductInBacket"/>
+            <CartLine :products="product" v-for="product in cartData.listProductInCart"/>
 
         </table>
         <hr>

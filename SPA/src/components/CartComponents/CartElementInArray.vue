@@ -3,7 +3,7 @@
     import AddIcon from "@/components/icons/Add_icon.vue";
     import SubIcon from "@/components/icons/LessIcon.vue";
     import DeleteIcon from "@/components/icons/Trash.vue";
-    import { useBacketStore } from "@/stores/backet.js";
+    import { useCartStore } from "@/stores/cart.js";
 
     const props = defineProps(["products"]);
 
@@ -14,7 +14,7 @@
         return totalPrice/100;
     })
 
-    const commandStore = useBacketStore();
+    const commandStore = useCartStore();
 
     function addProductToBacket(quantity) {
         commandStore.modifyQuantityOf(props.products.product.id, props.products.quantity + quantity)

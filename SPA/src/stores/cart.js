@@ -12,7 +12,7 @@ for reference, product object has to be on the form of
     image: String,
 }
 */
-export const useBacketStore = defineStore('backet', {
+export const useCartStore = defineStore('cart', {
     state: () => ({
         /*
          * I choose to use an object to use a map (of id) instead of a list
@@ -24,23 +24,23 @@ export const useBacketStore = defineStore('backet', {
          *    'totalPrice': Number,
          * }
         */
-        listProductInBacket: {},
+        listProductInCart: {},
         totalPrice: 0
     }),
     getters: {
     },
     actions: {
         addProduct(product, quantity) {
-            function productAlreadyInBacket(product, backet) {
-                return backet[product.id] != undefined
+            function productAlreadyInCart(product, cart) {
+                return cart[product.id] != undefined
             }
 
-            if(productAlreadyInBacket(product, this.listProductInBacket)) {
-                const backetEntry = this.listProductInBacket[product.id];
-                backetEntry.quantity += quantity;
-                backetEntry.totalPrice = backetEntry.unitPrice * backetEntry.quantity;
+            if(productAlreadyInCart(product, this.listProductInCart)) {
+                const cartEntry = this.listProductInCart[product.id];
+                cartEntry.quantity += quantity;
+                cartEntry.totalPrice = cartEntry.unitPrice * cartEntry.quantity;
 
-                this.totalPrice += quantity * backetEntry.unitPrice;
+                this.totalPrice += quantity * cartEntry.unitPrice;
             }
             else {
 
@@ -54,7 +54,7 @@ export const useBacketStore = defineStore('backet', {
                 }
 
                 const unitPrice = getUnitPrice(product.price);
-                const backetEntry = {
+                const cartEntry = {
                     'product': product,
                     'quantity': quantity,
                     'unitPrice': unitPrice,
@@ -62,20 +62,20 @@ export const useBacketStore = defineStore('backet', {
                 }
 
                 //add entry into our backet
-                this.listProductInBacket[product.id] = backetEntry;
-                this.totalPrice += backetEntry.totalPrice;
+                this.listProductInCart[product.id] = cartEntry;
+                this.totalPrice += cartEntry.totalPrice;
             }
         },
 
         modifyQuantityOf(productId, newQuantity) {
-            const productData = this.listProductInBacket[productId];
+            const productData = this.listProductInCart[productId];
 
             //product does not exist
             if (productData === undefined ) return ;
 
             //special case where we remove the entry
             if (newQuantity <= 0) {
-                delete this.listProductInBacket[productId];
+                delete this.listProductInCart[productId];
                 return ;
             }
 
@@ -88,11 +88,11 @@ export const useBacketStore = defineStore('backet', {
         },
 
         removeFromBacket(productId) {
-            if( this.listProductInBacket[productId] === undefined ) return;
+            if( this.listProductInCart[productId] === undefined ) return;
 
 
-            const totalPriceProduct = this.listProductInBacket[productId].totalPrice;
-            delete this.listProductInBacket[productId];
+            const totalPriceProduct = this.listProductInCart[productId].totalPrice;
+            delete this.listProductInCart[productId];
 
             this.totalPrice -= totalPriceProduct;
         }

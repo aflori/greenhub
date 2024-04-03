@@ -1,12 +1,12 @@
 <script setup>
-    import BasketLogo from "@/components/icons/Basket.vue";
-    import { useBacketStore } from "@/stores/backet.js";
+    import CartLogo from "@/components/icons/Basket.vue";
+    import { useCartStore } from "@/stores/cart.js";
     import { computed } from 'vue';
     import { RouterLink } from 'vue-router'
 
-    const backetStore = useBacketStore();
+    const cartStore = useCartStore();
     const getTotalPrice = computed(() => {
-        let totalPrice = backetStore.totalPrice;
+        let totalPrice = cartStore.totalPrice;
         totalPrice *= 100;
         totalPrice = Math.round(totalPrice);
         return totalPrice/100;
@@ -15,7 +15,7 @@
 
 <template>
     <RouterLink :to="{name: 'command'}">
-        <BasketLogo class="h-14 w-14 stroke-neutral"/>
+        <CartLogo class="h-14 w-14 stroke-neutral"/>
         <p class="text-neutral max-w-fit mx-auto">{{ getTotalPrice }} €</p>
     </RouterLink>
 </template>
