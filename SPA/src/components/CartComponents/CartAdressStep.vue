@@ -17,7 +17,7 @@
 
 <template>
     <form>
-        <FormField :keyO="keyO" :form="'adressDelivery'" v-for="(field, keyO) in formData" />
+        <FormField :label="label" :form="'adressDelivery'" v-for="(field, label) in formData" />
         <button type="submit" class="btn" @click.prevent="emitIfFormIsValid()">
             valider
         </button>

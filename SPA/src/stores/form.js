@@ -20,44 +20,44 @@ export const useFormStore = defineStore('formStore', {
         adressDelivery: {
             firstName: {
                 type: "text",
-                value: null,
-                name: "prénom",
+                value: "",
+                label: "prénom",
             },
             lastName: {
                 type: "text",
-                value: null,
-                name: "nom",
+                value: "",
+                label: "nom",
             },
             gender: {
-                type: "radio",
-                values: [ ['N', "--choisir--"], ['M', "homme"], [ 'F', "femme" ] ],
-                value: null,
-                name: "sexe"
+                type: "select",
+                values: [ {value:'', name:"--choisir--"}, {value:'M', name:"homme"}, {value:'F', name:"femme"} ],
+                value: "N",
+                label: "sexe"
             },
             adress: {
                 type: "text",
-                value: null,
-                name: "adresse postal",
+                value: "",
+                label: "adresse postal",
             },
             city: {
                 type: "text",
-                value: null,
-                name: "ville",
+                value: "",
+                label: "ville",
             },
             zipCode: {
                 type: "text",
-                value: null,
-                name: "code postal",
+                value: "",
+                label: "code postal",
             },
             country: {
                 type: "text",
-                value: null,
-                name: "pays",
+                value: "",
+                label: "pays",
             },
             phoneNumber: {
                 type: "text",
-                value: null,
-                name: "numéro de téléphone",
+                value: "",
+                label: "numéro de téléphone",
             },
         }
     }),
