@@ -27,7 +27,7 @@
         </table>
         <hr>
         <div>
-            <strong> total: {{ cartData.totalPrice }} €</strong>
+            <strong> total: {{ cartData.getTotalPriceRounded }} €</strong>
         </div>
         <button class="btn" @click="$emit('next-step')"> Confirmer la sélection </button>
     </div>

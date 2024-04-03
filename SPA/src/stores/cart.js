@@ -28,6 +28,12 @@ export const useCartStore = defineStore('cart', {
         totalPrice: 0
     }),
     getters: {
+        getTotalPriceRounded: (state) => {
+            let totalPrice = state.totalPrice;
+            totalPrice *= 100;
+            totalPrice = Math.round(totalPrice);
+            return totalPrice/100;
+        },
     },
     actions: {
         addProduct(product, quantity) {
