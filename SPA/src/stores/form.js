@@ -31,7 +31,7 @@ export const useFormStore = defineStore('formStore', {
             gender: {
                 type: "select",
                 values: [ {value:'', name:"--choisir--"}, {value:'M', name:"homme"}, {value:'F', name:"femme"} ],
-                value: "N",
+                value: "",
                 label: "sexe"
             },
             adress: {
@@ -62,6 +62,31 @@ export const useFormStore = defineStore('formStore', {
         }
     }),
     getters: {
+        isAdressFormValid: (state) => {
+            const validations = {
+                firstName:   /^[a-zA-z-]+$/,
+                lastName:    /^$/,
+                gender:      /^$/,
+                adress:      /^$/,
+                city:        /^$/,
+                zipCode:     /^$/,
+                country:     /^$/,
+                phoneNumber: /^$/,
+            }
+
+            for (const fieldName in validations) {
+
+                //I want the value and not the ref proxy, so i use the .value
+                const valueTested = state.adressDelivery[fieldName].value;
+                const regExpr = validations[fieldName];
+
+                if (!valueTested.match(regExpr)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     },
     actions: {
     }

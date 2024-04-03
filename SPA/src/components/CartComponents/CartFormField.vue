@@ -9,6 +9,7 @@
 
     const formStore = useFormStore();
     const formUsed = formStore[props.form][props.label]
+
 </script>
 
 <template>
