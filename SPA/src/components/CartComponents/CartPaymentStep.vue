@@ -15,7 +15,7 @@ const formData = formStore[formName]
       type="submit"
       class="btn"
       @click.prevent="$emit('next-step')"
-      :disabled="!formStore.isValidForm(formName)"
+      :disabled="!formStore.isPaiementFormValid"
     >
       valider
     </button>

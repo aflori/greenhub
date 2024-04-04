@@ -83,26 +83,13 @@ export const useFormStore = defineStore('formStore', {
     }
   }),
   getters: {
-    // as I want to use this function as an alias to get the good parametter
-    // and getter does not allow myself to get parametter, as mentionned on the doc,
-    // I am forced to return a callabck that do the wanted job.
-    isValidForm: (state) => {
-      return (formName) => {
-        switch (formName) {
-          case 'adressDelivery':
-            return state.isAdressFormValid
-          case 'paiementDatas':
-            return state.isPaiementFormValid
-        }
-      }
-    },
     isPaiementFormValid: (state) => {
       const validationRules = {
-        cardNumber: /^(([\d]{4})([ ]?)){4}$/,
+        cardNumber: /^[\d]{4}( )?[\d]{4}( )?[\d]{4}$/,
         securityCode: /^(\d{3})$/,
         validationDate: /^(0\d|1[0-2])\/(2[4-9]|[3-9]\d)$/
       }
-      return validate(state.adressDelivery, validationRules)
+      return validate(state.paiementDatas, validationRules)
     },
     isAdressFormValid: (state) => {
       const validationRules = {
