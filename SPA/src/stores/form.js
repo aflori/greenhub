@@ -62,6 +62,16 @@ export const useFormStore = defineStore('formStore', {
         }
     }),
     getters: {
+        // as I want to use this function as an alias to get the good parametter
+        // and getter does not allow myself to get parametter, as mentionned on the doc,
+        // I am forced to return a callabck that do the wanted job.
+        isValidForm: (state) => {
+            return (formName) => {
+                switch (formName) {
+                    case "adressDelivery": return state.isAdressFormValid
+                }
+            }
+        },
         isAdressFormValid: (state) => {
             const validations = {
                 // flag u allow myself to check all letters (not only ASCCI, per exemple 'é' included)
