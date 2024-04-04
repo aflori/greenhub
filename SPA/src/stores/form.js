@@ -85,7 +85,7 @@ export const useFormStore = defineStore('formStore', {
   getters: {
     isPaiementFormValid: (state) => {
       const validationRules = {
-        cardNumber: /^[\d]{4}( )?[\d]{4}( )?[\d]{4}$/,
+        cardNumber: /^(\d{4} ?){4}$/,
         securityCode: /^(\d{3})$/,
         validationDate: /^(0\d|1[0-2])\/(2[4-9]|[3-9]\d)$/
       }
