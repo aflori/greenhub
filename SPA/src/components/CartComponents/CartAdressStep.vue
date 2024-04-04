@@ -3,14 +3,15 @@
     import { useFormStore } from "@/stores/form.js";
     import FormField from "./CartFormField.vue";
 
-    const emit = defineEmits([ 'next-step' ]);
+    const emit = defineEmits([ 'next-step', 'prev-step' ]);
     const formStore = useFormStore();
-    const formData = formStore.adressDelivery;
+    const formName = 'adressDelivery'
+    const formData = formStore[formName];
 </script>
 
 <template>
     <form>
-        <FormField :label="label" :form="'adressDelivery'" v-for="(field, label) in formData" />
+        <FormField :label="label" :form="formName" v-for="(field, label) in formData" />
         <button type="submit" class="btn" @click.prevent="$emit('next-step')" :disabled="!formStore.isAdressFormValid">
             valider
         </button>
