@@ -55,10 +55,27 @@ export const useFormStore = defineStore('formStore', {
                 label: "pays",
             },
             phoneNumber: {
-                type: "text",
+                type: "tel",
                 value: "",
                 label: "numéro de téléphone",
             },
+        },
+        paiementDatas: {
+            cardNumber: {
+                type: "text",
+                value: "",
+                label: "numéro de carte"
+            },
+            securityCode: {
+                type: "text",
+                value: "",
+                label: "code de sécurité"
+            },
+            validationDate: {
+                type: "month",
+                value: "",
+                label:"date d'expiration"
+            }
         }
     }),
     getters: {
@@ -69,8 +86,17 @@ export const useFormStore = defineStore('formStore', {
             return (formName) => {
                 switch (formName) {
                     case "adressDelivery": return state.isAdressFormValid
+                    case "paiementDatas": return state.isPaiementFormValid
                 }
             }
+        },
+        isPaiementFormValid: (state) => {
+            const validationsRules = {
+                cardNumber: /^(([\d]{4})([ ]?)){4}$/,
+                securityCode: /^(\d{3})$/,
+                validationDate: /^(0\d|1[0-2])\/(2[4-9]|[3-9]\d)$/
+            }
+            return validate(state.adressDelivery, validations);
         },
         isAdressFormValid: (state) => {
             const validations = {

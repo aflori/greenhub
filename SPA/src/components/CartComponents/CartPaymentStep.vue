@@ -5,7 +5,7 @@
 
     const emit = defineEmits([ 'next-step', 'prev-step' ]);
     const formStore = useFormStore();
-    const formName = 'adressDelivery'
+    const formName = 'paiementDatas'
     const formData = formStore[formName];
 </script>
 
