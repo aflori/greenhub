@@ -5,10 +5,10 @@
 @tailwind utilities;
 
 body {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .container {
-    max-width: 1080px;
-    margin: 0 auto;
+  max-width: 1080px;
+  margin: 0 auto;
 }

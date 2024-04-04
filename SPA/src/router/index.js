@@ -9,31 +9,31 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-        path: '/',
-        name: 'home',
-        component: HomeView
+      path: '/',
+      name: 'home',
+      component: HomeView
     },
     {
-        path: '/products',
-        name: 'product_list',
-        component: Products
+      path: '/products',
+      name: 'product_list',
+      component: Products
     },
     {
-        path: '/product/:id',
-        name: 'product',
-        component: Product,
-        props:true
+      path: '/product/:id',
+      name: 'product',
+      component: Product,
+      props: true
     },
     {
-        path: '/login',
-        name: 'log_in',
-        component: LogIn
+      path: '/login',
+      name: 'log_in',
+      component: LogIn
     },
     {
-        path: '/panier',
-        name: 'command',
-        component: Command
-    },
+      path: '/panier',
+      name: 'command',
+      component: Command
+    }
   ]
 })
 

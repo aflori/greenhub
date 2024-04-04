@@ -1,11 +1,11 @@
-import { ref, reactive, computed } from 'vue';
-import { defineStore } from 'pinia';
-import axios from 'axios';
+import { ref, reactive, computed } from 'vue'
+import { defineStore } from 'pinia'
+import axios from 'axios'
 
-const apiURL = "http://localhost:8000/api/products"
+const apiURL = 'http://localhost:8000/api/products'
 
 function getCorretlyFormatedObject(product) {
-    /*
+  /*
         received:
         {
             brand: "cupiditate"
@@ -38,85 +38,91 @@ function getCorretlyFormatedObject(product) {
             image: String,
         }
     */
-    let image = undefined;
-    if (product.image.length > 0) {
-        image = product.image[0];
-    }
-    return {
-        id: product.id,
-        title: product.name,
-        price: product.price.toString() + " €",
-        categories: product.categories,
-        description: product.description,
-        image: image,
-    }
+  let image = undefined
+  if (product.image.length > 0) {
+    image = product.image[0]
+  }
+  return {
+    id: product.id,
+    title: product.name,
+    price: product.price.toString() + ' €',
+    categories: product.categories,
+    description: product.description,
+    image: image
+  }
 }
-
 
 async function makeRequestAndRecoverJSON(url, filters) {
-
-    const result = await axios.get(url, { params: filters});
-    const json = result.data;
-    return json;
-
+  const result = await axios.get(url, { params: filters })
+  const json = result.data
+  return json
 }
 function getProductUrl(id) {
-    function removeLastChar(str) {
-        return str.substring(0, str.length - 1);
-    }
+  function removeLastChar(str) {
+    return str.substring(0, str.length - 1)
+  }
 
-    let baseApi = apiURL;
-    baseApi = removeLastChar(baseApi);
-    return baseApi + "/" + id.toString();
+  let baseApi = apiURL
+  baseApi = removeLastChar(baseApi)
+  return baseApi + '/' + id.toString()
 }
 
 export const useProductListStore = defineStore('productList', () => {
+  //const products = ref(null);
+  const filters = reactive({})
+  const raw_data = ref(null)
 
-    //const products = ref(null);
-    const filters = reactive({});
-    const raw_data = ref(null);
-
-    const products = computed( () => {
-        if (raw_data.value === null) {
-            return [];
-        }
-        return raw_data.value.data.map( getCorretlyFormatedObject );
-    });
-
-    async function load() {
-        raw_data.value = await makeRequestAndRecoverJSON(apiURL, filters)
-    };
-
-    function changeFilter(filterName, newValue) {
-        filters[filterName] = newValue;
-        load();
+  const products = computed(() => {
+    if (raw_data.value === null) {
+      return []
     }
+    return raw_data.value.data.map(getCorretlyFormatedObject)
+  })
 
-    async function getSingleProduct(id) {
+  async function load() {
+    raw_data.value = await makeRequestAndRecoverJSON(apiURL, filters)
+  }
 
-        const url = getProductUrl(id);
-        let product = await makeRequestAndRecoverJSON(url);
-        product = product.data
-        return getCorretlyFormatedObject(product);
+  function changeFilter(filterName, newValue) {
+    filters[filterName] = newValue
+    load()
+  }
+
+  async function getSingleProduct(id) {
+    const url = getProductUrl(id)
+    let product = await makeRequestAndRecoverJSON(url)
+    product = product.data
+    return getCorretlyFormatedObject(product)
+  }
+
+  function loadOnlyOnce() {
+    if (products.value == {}) {
+      load()
     }
+  }
+  function publishComment(productId, comment) {
+    const url = getProductUrl(productId) + '/comment'
 
-    function loadOnlyOnce() {
-        if (products.value == {}) {
-            load();
-        }
-    }
-    function publishComment(productId, comment) {
-        const url = getProductUrl(productId) + '/comment';
-
-        axios.post(url, {comment}).then( (response) => {
-            console.log("success!");
-            console.log(response.data);
-        }).catch((response) => {
-            console.log("error");
-            console.log(response.response);
-        })
-    }
-    // load()
-    return { products, load, getSingleProduct, filters, changeFilter, loadOnlyOnce, 
-        raw_data, publishComment };
+    axios
+      .post(url, { comment })
+      .then((response) => {
+        console.log('success!')
+        console.log(response.data)
+      })
+      .catch((response) => {
+        console.log('error')
+        console.log(response.response)
+      })
+  }
+  // load()
+  return {
+    products,
+    load,
+    getSingleProduct,
+    filters,
+    changeFilter,
+    loadOnlyOnce,
+    raw_data,
+    publishComment
+  }
 })
