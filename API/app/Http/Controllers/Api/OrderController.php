@@ -8,10 +8,12 @@ use App\Models\Order;
 
 class OrderController extends Controller
 {
+    /*
     public function index()
     {
         return Order::all();
     }
+     */
 
     public function store(Request $request)
     {
@@ -23,6 +25,7 @@ class OrderController extends Controller
         return $newOrder;
     }
 
+    /*
     public function show(Order $order ) {
         return $order;
     }
@@ -44,4 +47,5 @@ class OrderController extends Controller
         $order->delete();
         return $order;
     }
+     */
 }

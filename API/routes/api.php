@@ -33,13 +33,14 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 // Route::apiResource('products', ProductController::class);
 Route::get('/products', [ProductController::class, "index"]);
 Route::apiResource("product", ProductController::class)->except("index");
-
 Route::post('/product/{product}/comment', [ProductController::class, "comment"])->middleware(['auth:sanctum', 'XSS']);
+
+Route::apiResource('orders', OrderController::class)->only(["store"])->middleware(["auth:sanctum"]);
+
 
 Route::apiResource('users', UserController::class);
 Route::apiResource('articles', BlogArticleController::class);
 Route::apiResource('companies', CompanyController::class);
-Route::apiResource('orders', OrderController::class);
 
 Route::middleware('isAdmin')->group(function() {
     Route::apiResource('adresses', AdressController::class);
@@ -48,5 +49,4 @@ Route::middleware('isAdmin')->group(function() {
     Route::apiResource('comments', CommentController::class);
     Route::apiResource('discounts', DiscountController::class);
     Route::apiResource('labels', LabelController::class);
-
 });
