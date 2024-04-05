@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Order\CreateOrderRequest;
 use App\Models\Order;
 
 class OrderController extends Controller
@@ -15,7 +16,12 @@ class OrderController extends Controller
     }
      */
 
-    public function store(Request $request)
+    /**
+     * create an order
+     *
+     * create an order to an user where order data is on the request.
+     */
+    public function store(CreateOrderRequest $request)
     {
         $newOrder = new Order();
         foreach ($request->request as $columnName => $columnValue) {
