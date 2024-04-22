@@ -1,0 +1,23 @@
+# Use postgres/example user/password credentials
+
+services:
+
+  postgres:
+    image: postgres
+    restart: always
+
+    shm_size: 128mb
+    volumes:
+      - ./data:/var/lib/postgressql/data
+
+    environment:
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: green_hub
+      POSTGRES_DB: greenhub_db
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+

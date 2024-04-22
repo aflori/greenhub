@@ -28,31 +28,35 @@ To make that we decided to create a SPA application with its associated API
 ### server side service
 
 The API might allow to
-- have authentification features, with roles (login, register, logout).
+- have authentication features, with roles (login, register, logout).
 - have an admin see any information on its user (if not deleted)
 - have an admin that can create an user account with any role
 - have an admin that can edit an user account
 - have an admin that can delete an user account if he did not do an order, else removing personnal information
 - have an administrator create product
 - have user see all products (with or without filters)
-- have an authentificated user make a command on a list of product
-- have an authentificated user make a comment and/or rating
-- have an authentificated user update a cmment and/or rating
+- have an authenticated user make a command on a list of product
+- have an authenticated user make a comment and/or rating
+- have an authenticated user update a comment and/or rating
 - have an user to see a blog article
-- have an authentificated user comment an article
+- have an authenticated user comment an article
 - have an admin create an article
 - have an admin modify an article
 - have an admin update an article
 - have an admin delete an article
 - have an user see all company data
-- have an authentificated user comment or review a company
+- have an authenticated user comment or review a company
 - have an user in the company update the company data
 - have an user in the company delete it from the site
 - have an admin create a company
 - have an admin update a company
 - have an admin delete a company
 - have an admin to associate a user with a company
-- have an authentificated user make an order with a list of order
-- have an authentificated user see the history of its order
+- have an authenticated user make an order with a list of order
+- have an authenticated user see the history of its order
 - have an admin see the history of all the previous made order
+
+## docker setup
+
+cf. ```compose.yaml```
 
