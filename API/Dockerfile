@@ -28,10 +28,11 @@ RUN cp .env.production .env \
  && php artisan key:generate \
  && php artisan config:cache \
  && php artisan route:cache \
- && php artisan view:cache
+ && php artisan view:cache \
+ && chown -R application:application .
+#RUN php artisan migrate
 
 # Compilation des assets de Breeze (ou de votre site)
 EXPOSE 80
 
-RUN chown -R application:application .
 
