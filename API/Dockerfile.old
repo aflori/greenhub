@@ -1,0 +1,35 @@
+# cette version est probablement ce qui est attendu dans le support de cours
+# Ne peut pas être utilisé car il doit manquere des configuration/extensions
+# dans nginx ou php-fpm.
+
+FROM php:8.2-fpm
+
+#installation de nginx & supervisor
+RUN apt-get -y update && apt-get -y install nginx supervisor
+
+# installation des composants de connection à la base de donnée
+RUN apt-get install -y libpq-dev \
+ && docker-php-ext-install pdo pdo_pgsql
+
+#récupération du code laravel
+WORKDIR /var/html/
+COPY ./src .
+
+# installaition de composer et des composantes
+RUN apt-get install -y zlib1g-dev libzip-dev && \
+    docker-php-ext-install zip && \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+    composer install
+
+
+#setup nginx config
+COPY ./nginx.config.api.default.conf /etc/nginx/conf.d/default
+EXPOSE 80/tcp
+
+#setup laravel
+RUN php artisan config:cache && php artisan event:cache && php artisan route:cache
+
+# start command
+COPY ./supervisord.conf /etc/supervisor/conf.d/supervisor.conf
+CMD ["/usr/bin/supervisord"]
+
