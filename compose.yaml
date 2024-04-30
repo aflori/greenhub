@@ -38,8 +38,8 @@ services:
     restart: always
     depends_on:
       - postgres
-    ports:
-      - 8000:80
+    #ports:
+    #  - 8000:80
     networks:
       - db_network
 
@@ -47,9 +47,8 @@ services:
     build: ./SPA
     restart: always
 
-    ports:
-      - 5173:5173
-
+    #ports:
+    #  - 5173:5173
 networks:
   db_network:
 
