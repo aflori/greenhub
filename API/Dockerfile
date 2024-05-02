@@ -23,14 +23,13 @@ COPY ./src_depl .
 
 # Installation et configuration de votre site pour la production
 # https://laravel.com/docs/10.x/deployment#optimizing-configuration-loading
-RUN cp .env.production .env \
+RUN cp .env.example .env \
  && COMPOSER_ALLOW_SUPERUSER=1 composer install --no-interaction --optimize-autoloader \
  && php artisan key:generate \
- && php artisan config:cache \
  && php artisan route:cache \
  && php artisan view:cache \
  && chown -R application:application .
-#RUN php artisan migrate
+#RUN php artisan config:cache
 
 # Compilation des assets de Breeze (ou de votre site)
 EXPOSE 80
