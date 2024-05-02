@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import axios from 'axios'
 import { ref } from 'vue'
 
-const baseUrl = 'http://localhost:8000/'
+const baseUrl = 'https://api.aurelipool.space/'
 
 export const useLoggingStore = defineStore('logging', () => {
   const isLogged = ref(undefined)

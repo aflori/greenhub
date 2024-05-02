@@ -2,7 +2,7 @@ import { ref, reactive, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-const apiURL = 'http://localhost:8000/api/products'
+const apiURL = 'https://api.aurelipool.space/api/products'
 
 function getCorretlyFormatedObject(product) {
   /*

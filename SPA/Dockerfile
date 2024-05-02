@@ -1,4 +1,4 @@
-FROM node:21-alpine3.19 as builded-front
+FROM node:21-alpine3.19 as build-step
 
 WORKDIR /home/node/
 COPY ./src2/ .
@@ -7,9 +7,9 @@ RUN npm install\
  && npm run build
 
 #CMD /bin/sh
-FROM nginx:1.25.5
+FROM nginx:1.25.5 as prod-step
 
 COPY ./nginx_conf/ /etc/nginx/conf.d/
-COPY --from=builded-front /home/node/dist /var/www
+COPY --from=build-step /home/node/dist /var/www
 
-EXPOSE 5173
+EXPOSE 80
