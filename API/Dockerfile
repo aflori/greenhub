@@ -38,7 +38,7 @@ EXPOSE 80
 RUN echo "#!/bin/sh" > startCMD.sh \
   && echo "php artisan migrate --force;" >> startCMD.sh \
   && echo "php artisan config:cache;" >> startCMD.sh \
-  && echo "supervisord;" \
+  && echo "supervisord;" >> startCMD.sh \
   && chmod +x startCMD.sh
 
 CMD [ "/app/startCMD.sh" ]
