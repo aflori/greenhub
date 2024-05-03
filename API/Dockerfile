@@ -34,4 +34,12 @@ RUN cp .env.example .env \
 # Compilation des assets de Breeze (ou de votre site)
 EXPOSE 80
 
+# command script
+RUN echo "#!/bin/sh" > startCMD.sh \
+  && echo "php artisan migrate --force;" >> startCMD.sh \
+  && echo "php artisan config:cache;" >> startCMD.sh \
+  && echo "supervisord;" \
+  && chmod +x startCMD.sh
+
+CMD [ "/app/startCMD.sh" ]
 
