@@ -31,11 +31,53 @@ class OrderTest extends TestCase
         $response->assertStatus(422);
     }
 
+    public function test_request_form_invalid_2(): void
+    {
+        $object = initDataBase();
+        $user = $object[0];
+        $product = $object[1];
+
+        $response = $this
+            ->withHeaders([
+                'accept' => 'application/json',
+            ])
+            ->actingAs($user)
+            ->postJson($this->url, [
+                "total_amount" => 22,
+                "total_vat" => 2,
+                "total_product_price" => 20,
+                "shipping_fee" => 0,
+                "delivery_date" => "01/01/2025",
+                "facturation_adress" => [
+                    "road_number" => 18,
+                    "road_name" => "Avenus des totos",
+                    "city" => "la tête à toto",
+                    "zip_code" => "00000",
+                ],
+                "delivery_adress" => [
+                    "road_number" => 18,
+                    "road_name" => "Avenus des totos",
+                    "city" => "la tête à toto",
+                    "zip_code" => "00000",
+                ],
+                "products" => [
+                    [
+                        "id" => $product->id,
+                        "unit_price" => '0',
+                        "quantity_buyed" => 2,
+                        "total_price" => 22
+                    ]
+                ]
+            ]);
+
+        $response->assertStatus(422);
+    }
+
     public function test_request_not_authentificated(): void
     {
         $o = initDataBase();
         $response = $this
-            ->withSession([])
+            //->withSession([])
             ->withHeaders([
                 'accept' => 'application/json',
             ])
@@ -50,7 +92,7 @@ class OrderTest extends TestCase
 function initDataBase() {
     $user = User::factory()->create();
     Brand::factory()->create();
-    $product = Product::factory()->create();
+    $products = Product::factory(5)->create();
 
-    return [ $user, $product ];
+    return [ $user, $products[0] ];
 }

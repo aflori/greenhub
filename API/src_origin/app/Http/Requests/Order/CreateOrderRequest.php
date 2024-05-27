@@ -37,7 +37,7 @@ class CreateOrderRequest extends FormRequest
             "facturation_adress.road_number" => "required|integer",
             "facturation_adress.road_name" => "required|regex:/$[\p{l} ]+^/u",
             "facturation_adress.city" => "required|alpha_dash",
-            "facturation_adress.zip_code" => "required|alpha",
+            "facturation_adress.zip_code" => "required|alpha_num",
             // the delivery adress if different from facturation adress
             "delivery_adress" => "nullable|array",
             "delivery_adress.road_number" => "required|integer",
@@ -49,8 +49,10 @@ class CreateOrderRequest extends FormRequest
             "products.*" => "required|array",
             // id of selected product (uuid)
             "products.*.id" => "required|exists:products,id",
+            // price with vat
             "products.*.unit_price" => "required|numeric",
             "products.*.quantity_buyed" => "required|integer",
+            // price with vat
             "products.*.total_price" => "required|numeric"
         ];
     }
