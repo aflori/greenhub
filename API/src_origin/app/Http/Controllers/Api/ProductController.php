@@ -29,7 +29,7 @@ class ProductController extends Controller
         $filterAction = new ProductFilter;
         $filterAction($query, $filteringField);
 
-        $productsListFiltered = $query->get();
+        $productsListFiltered = $query->limit(25)->get();
 
         return new ProductCollection($productsListFiltered);
     }
