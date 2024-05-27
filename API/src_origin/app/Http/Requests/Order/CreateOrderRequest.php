@@ -24,36 +24,28 @@ class CreateOrderRequest extends FormRequest
         return [
             // the total amount of the order decided with taxes and shiping fee included
             "total_amount" => "required|numeric",
-            // the total amount of vat buyed
-            "total_vat" => "required|numeric",
-            // the total amount of the order whitout taxes
-            "total_product_price" => "required|numeric",
             // the total amount of shipping fee
-            "shipping_fee" => "required|numeric",
+            "shipping_fee" => "nullable|numeric",
             // the wanted delivery date at format 05/04/2024
-            "delivery_date" => "required|date",
+            "delivery_date" => "present_with:shipping_fee|date",
             // the facturation adress
             "facturation_adress" => "required|array",
             "facturation_adress.road_number" => "required|integer",
             "facturation_adress.road_name" => "required|regex:/$[\p{l} ]+^/u",
             "facturation_adress.city" => "required|alpha_dash",
             "facturation_adress.zip_code" => "required|alpha_num",
-            // the delivery adress if different from facturation adress
-            "delivery_adress" => "nullable|array",
+            // the delivery adress if relevent
+            "delivery_adress" => "present_with:shipping_fee|array",
             "delivery_adress.road_number" => "required|integer",
             "delivery_adress.road_name" => "required|regex:/$[\p{l} ]+^/u",
             "delivery_adress.city" => "required|alpha_dash",
-            "delivery_adress.zip_code" => "required|alpha",
+            "delivery_adress.zip_code" => "required|alpha_num",
             // the list of product buyed
             "products" => "required|array",
+            // list of id of selected products (uuid)
             "products.*" => "required|array",
-            // id of selected product (uuid)
             "products.*.id" => "required|exists:products,id",
-            // price with vat
-            "products.*.unit_price" => "required|numeric",
-            "products.*.quantity_buyed" => "required|integer",
-            // price with vat
-            "products.*.total_price" => "required|numeric"
+            "products.*.quantity" => "required|integer",
         ];
     }
 }

@@ -43,31 +43,19 @@ class OrderTest extends TestCase
             ])
             ->actingAs($user)
             ->postJson($this->url, [
-                "total_amount" => 22,
-                "total_vat" => 2,
-                "total_product_price" => 20,
-                "shipping_fee" => 0,
-                "delivery_date" => "01/01/2025",
+                "total_amount" => 11,
                 "facturation_adress" => [
-                    "road_number" => 18,
-                    "road_name" => "Avenus des totos",
-                    "city" => "la tête à toto",
-                    "zip_code" => "00000",
-                ],
-                "delivery_adress" => [
-                    "road_number" => 18,
-                    "road_name" => "Avenus des totos",
-                    "city" => "la tête à toto",
-                    "zip_code" => "00000",
+                    "road_number" => 0,
+                    "road_name" => 'La tête à toto',
+                    "city" => "Toto",
+                    "zip_code" => "0+0",
                 ],
                 "products" => [
                     [
                         "id" => $product->id,
-                        "unit_price" => '0',
-                        "quantity_buyed" => 2,
-                        "total_price" => 22
+                        "quantity" => 1
                     ]
-                ]
+                ],
             ]);
 
         $response->assertStatus(422);
@@ -84,6 +72,45 @@ class OrderTest extends TestCase
             ->post($this->url);
 
         $response->assertStatus(401);
+    }
+
+    public function test_simple_product() : void {
+
+    }
+
+    public function test_multiple_products() : void {
+
+    }
+
+    public function test_update_stock() : void {
+
+    }
+
+    public function test_not_existing_product() : void {
+
+    }
+
+    public function test_wrong_total_amount() : void {
+
+    }
+
+    public function test_wrong_vat_amount() : void {
+
+    }
+
+    public function test_wrong_total_raw_price() : void {
+
+    }
+
+    public function test_order_with_shipping_fee() : void {
+
+    }
+
+    public function test_order_with_shipping_fee_missing_fields() : void {
+
+    }
+
+    public function test_out_of_stock(): void {
 
     }
 }

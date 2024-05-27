@@ -10,11 +10,11 @@ use App\Models\Order;
 class OrderController extends Controller
 {
     /*
-    public function index()
-    {
-        return Order::all();
-    }
-     */
+        public function index()
+        {
+            return Order::all();
+        }
+    */
 
     /**
      * create an order
@@ -24,34 +24,32 @@ class OrderController extends Controller
     public function store(CreateOrderRequest $request)
     {
         $newOrder = new Order();
-        foreach ($request->request as $columnName => $columnValue) {
-            $newOrder->$columnName = $columnValue;
-        }
-        $newOrder->save();
-        return $newOrder;
+
+        // $newOrder->save();
+        // return $newOrder;
     }
 
     /*
-    public function show(Order $order ) {
-        return $order;
-    }
-
-    public function update(Request $request, Order $order)
-    {
-        if ( isset($request->id) ) {
-            return response()->json(["error" => "cannot change id"], 404);
+        public function show(Order $order ) {
+            return $order;
         }
 
-        foreach ($request->request as $attributeName => $attributeValue) {
-            $order->$attributeName = $attributeValue;
-        }
-        $order->save();
-        return $order;
-    }
+        public function update(Request $request, Order $order)
+        {
+            if ( isset($request->id) ) {
+                return response()->json(["error" => "cannot change id"], 404);
+            }
 
-    public function destroy(Order $order) {
-        $order->delete();
-        return $order;
-    }
-     */
+            foreach ($request->request as $attributeName => $attributeValue) {
+                $order->$attributeName = $attributeValue;
+            }
+            $order->save();
+            return $order;
+        }
+
+        public function destroy(Order $order) {
+            $order->delete();
+            return $order;
+        }
+    */
 }
