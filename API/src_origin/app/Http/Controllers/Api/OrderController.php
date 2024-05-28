@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Order\CreateOrderRequest;
 use App\Models\Order;
+use App\Models\User;
+use App\Models\Adress;
+
 
 class OrderController extends Controller
 {
@@ -27,6 +30,21 @@ class OrderController extends Controller
 
         // $newOrder->save();
         // return $newOrder;
+        $user = User::factory()->create();
+        $adress = Adress::factory()->create();
+
+        $newOrder->number = 0;
+        $newOrder->order_date = "1/1/2020";
+        $newOrder->delivery_date = "1/1/2020";
+        $newOrder->bill = 0.0;
+        $newOrder->vat_rate = 0.0;
+        $newOrder->shipping_fee = 0.0;
+        $newOrder->total_price = 0.0;
+        $newOrder->buyer_id = $user->id;
+        $newOrder->facturation_adress = $adress->id;
+        $newOrder->delivery_adress = $adress->id;
+        $newOrder->save();
+        return $newOrder;
     }
 
     /*

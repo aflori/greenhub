@@ -31,15 +31,15 @@ class CreateOrderRequest extends FormRequest
             // the facturation adress
             "facturation_adress" => "required|array",
             "facturation_adress.road_number" => "required|integer",
-            "facturation_adress.road_name" => "required|regex:/$[\p{l} ]+^/u",
+            "facturation_adress.road_name" => "required|regex:/^[\\pL\\s-]+$/u",
             "facturation_adress.city" => "required|alpha_dash",
             "facturation_adress.zip_code" => "required|alpha_num",
             // the delivery adress if relevent
             "delivery_adress" => "present_with:shipping_fee|array",
-            "delivery_adress.road_number" => "required|integer",
-            "delivery_adress.road_name" => "required|regex:/$[\p{l} ]+^/u",
-            "delivery_adress.city" => "required|alpha_dash",
-            "delivery_adress.zip_code" => "required|alpha_num",
+            "delivery_adress.road_number" => "present_with:shipping_fee|integer",
+            "delivery_adress.road_name" => "present_with:shipping_fee|regex:/^[\\pL\\s-]+$/u",
+            "delivery_adress.city" => "present_with:shipping_fee|alpha_dash",
+            "delivery_adress.zip_code" => "present_with:shipping_fee|alpha_num",
             // the list of product buyed
             "products" => "required|array",
             // list of id of selected products (uuid)
