@@ -405,7 +405,7 @@ class OrderTest extends TestCase
                 "delivery_date" => "02/01/2025",
                 "delivery_adress" => [
                     "road_number" => 1,
-                    "road_name" => "allée des toto",
+                    "road_name" => "allée des totos",
                     "city" => "Toto",
                     "zip_code" => "00001"
                 ]
@@ -424,7 +424,7 @@ class OrderTest extends TestCase
                         ->has('delivery')
                         ->has('delivery.adress', fn (AssertableJson $json) =>
                             $json->where("road_number", 1)
-                                ->where("road_name", "allée des toto")
+                                ->where("road_name", "allée des totos")
                                 ->where("city", "Toto")
                                 ->where("zip_code", "00001")
                         )
@@ -472,7 +472,8 @@ class OrderTest extends TestCase
 
     /* to implement later
     public function test_stock_failed_after_other_command(): void {}
-    public function test_order_table_has_correct_field() : void { }
+    public function test_order_date_present_in_response(): void {}
+    public function test_order_table_has_correct_field() : void {}
     public function test_correct_value_pivot_table_with_products(): void {}
     public function test_same_product_has_2_command(): void {}
     public function test_adress_is_ok(): void {}

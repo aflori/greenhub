@@ -29,11 +29,14 @@ class OrderController extends Controller
     public function store(CreateOrderRequest $request)
     {
         $user = $request->user();
-        $adress = Adress::factory()->create();
+        $facturationAdress = Adress::factory()->create();
+        $deliveryAdress = getAdressModel($request->post("delivery_adress")) ?? $facturationAdress;
+
 
         $totalAmount = $request->post("total_amount");
         $productsBuyed = $request->post("products");
-        $deliveryDate = $request->post("delivery_date") ?? "1/1/2020";
+        $facturationDate = "01/01/0001";
+        $deliveryDate = $request->post("delivery_date") ?? $facturationDate;
         $shippingFee = $request->post("shipping_fee") ?? 0;
 
         if (is_invalid_stock($productsBuyed)) {
@@ -46,15 +49,15 @@ class OrderController extends Controller
         // return $newOrder;
 
         $newOrder->number = 0;
-        $newOrder->order_date = "1/1/2020";
+        $newOrder->order_date = $facturationDate;
         $newOrder->delivery_date = $deliveryDate;
         $newOrder->bill = 0.0;
         $newOrder->vat_rate = 0.0;
         $newOrder->shipping_fee = $shippingFee;
         $newOrder->total_price = $totalAmount;
         $newOrder->buyer_id = $user->id;
-        $newOrder->facturation_adress = $adress->id;
-        $newOrder->delivery_adress = $adress->id;
+        $newOrder->facturation_adress = $facturationAdress->id;
+        $newOrder->delivery_adress = $deliveryAdress->id;
         $newOrder->save();
 
         foreach( $productsBuyed as $product) {
@@ -115,4 +118,16 @@ function is_valid_stock(array $listOfProductBuyed): bool {
     }
 
     return true;
+}
+
+function getAdressModel(array|null $adressArray): Adress|null {
+    if ($adressArray === null) return null;
+    $adress = new Adress();
+    $adress->number = 0;
+    $adress->road = "";
+    $adress->postal_code = 0;
+    $adress->city = "";
+    $adress->country = "France";
+    $adress->save();
+    return $adress;
 }
