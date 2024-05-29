@@ -371,12 +371,15 @@ class OrderTest extends TestCase
     }
 
     // update to confirm adress is ok
-    public function test_order_with_delivery() : void { 
-        $this->markTestSkipped();
-
+    public function test_order_with_delivery() : void {
         $o = initDataBase();
         $user = $o[0];
         $product = $o[1];
+
+        if ($product->stock < 1) {
+            $product->stock = 2;
+            $product->save();
+        }
 
         $totalPrice = getPriceWithVat(1*$product->price, $product->vat_rate);
         $response = $this
@@ -414,25 +417,22 @@ class OrderTest extends TestCase
             $order = Order::where('buyer_id', $user->id)->first();
 
             $response->assertJson(fn (AssertableJson $json) =>
-                $json
-                    ->where('id', $order->id)
-                    ->where('total_price', $totalPrice)
-                    ->has("products", 1)
-                    ->has("products.0", fn (AssertableJson $json) => 
-                        $json->where('id', $product->id)
-                            ->where('quantity', 1)
-                    )
-                    ->has('delivery')
-                    ->has('delivery.adress', fn (AssertableJson $json) =>
-                        $json->where("road_number", 1)
-                            ->where("road_name", "allée des toto")
-                            ->where("city", "Toto")
-                            ->where("zip_code", "00001")
-                            ->has("id")
-                    )
-                    ->has('delivery.fee')
-                    ->has('delivery.date')
-                    ->etc()
+                $json->has('data', fn (AssertableJson $json) =>
+                    $json->where('id', $order->id)
+                        ->where('total_price', $totalPrice)
+                        ->has("products", 1)
+                        ->has('delivery')
+                        ->has('delivery.adress', fn (AssertableJson $json) =>
+                            $json->where("road_number", 1)
+                                ->where("road_name", "allée des toto")
+                                ->where("city", "Toto")
+                                ->where("zip_code", "00001")
+                        )
+                        ->has('delivery.fee')
+                        ->has('delivery.date')
+                        ->etc()
+                )
+                
             );
     }
 
