@@ -113,8 +113,15 @@ class OrderTest extends TestCase
         $o = initDataBase();
         $user = $o[0];
         $product = $o[1];
+
+        $quantity = 2;
+
+        if($product->stock < $quantity) {
+            $product->stock = $quantity + 1;
+            $product->save();
+        }
         
-        $totalPrice = getPriceWithVat(2*$product->price, $product->vat_rate);
+        $totalPrice = getPriceWithVat($quantity*$product->price, $product->vat_rate);
         $response = $this
             ->withHeaders([
                 'accept' => 'application/json',
@@ -131,7 +138,7 @@ class OrderTest extends TestCase
                 "products" => [
                     [
                         "id" => $product->id,
-                        "quantity" => 2
+                        "quantity" => $quantity
                     ]
                 ]
             ]);
@@ -150,7 +157,7 @@ class OrderTest extends TestCase
                     ->has("products.0", fn (AssertableJson $json) => 
                         $json
                             ->where('id', $product->id)
-                            ->where('quantity', 2)
+                            ->where('quantity', $quantity)
                     )
                     ->missing('delivery')
                     ->etc()
@@ -169,6 +176,10 @@ class OrderTest extends TestCase
 
         foreach ($quantity as $key => $value) {
             $p = $products[$key];
+            if($p->stock < $value) {
+                $p->stock = $value + 1;
+                $p->save();
+            }
             $totalPrice += getPriceWithVat($value * $p->price, $p->vat_rate);
         }
 
@@ -326,8 +337,6 @@ class OrderTest extends TestCase
     }
 
     public function test_not_existing_product() : void {
-        $this->markTestSkipped();
-
         $o = initDataBase();
         $user = $o[0];
         $product = $o[1];
