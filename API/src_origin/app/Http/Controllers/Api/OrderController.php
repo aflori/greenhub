@@ -50,14 +50,17 @@ class OrderController extends Controller
         $newOrder->delivery_adress = $adress->id;
         $newOrder->save();
 
-        $productBuyedId = $productsBuyed[0]['id'];
-        $productBuyedQuantity = $productsBuyed[0]['quantity'];
+        foreach( $productsBuyed as $product) {
 
-        $newOrder->products()->attach($productBuyedId, [
-            "quantity" => $productBuyedQuantity,
-            "unit_price" => "0",
-            "unit_price_vat" => 0.0
-        ]);
+            $productBuyedId = $product['id'];
+            $productBuyedQuantity = $product['quantity'];
+    
+            $newOrder->products()->attach($productBuyedId, [
+                "quantity" => $productBuyedQuantity,
+                "unit_price" => "0",
+                "unit_price_vat" => 0.0
+            ]);
+        }
         $newOrder->save();
         return new OrderRessource($newOrder);
     }

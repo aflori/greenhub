@@ -160,9 +160,6 @@ class OrderTest extends TestCase
     }
 
     public function test_multiple_products() : void {
-        $this->markTestSkipped();
-
-
         Brand::factory()->create();
         $user = User::factory()->create();
         $products = Product::factory(3)->create();
@@ -207,30 +204,32 @@ class OrderTest extends TestCase
 
         $response->assertStatus(201);
 
-        $order = Order::where('buyer_id', $user->id)->get();
+        $order = Order::where('buyer_id', $user->id)->first();
 
         $response->assertJson(fn (AssertableJson $json) =>
-            $json
-                ->where('id', $order->id)
-                ->where('total_price', $totalPrice)
-                ->has("products", 3)
-                ->has("products.0", fn (AssertableJson $json) => 
-                    $json
-                        ->where('id', $products[0]->id)
-                        ->where('quantity', $quantity[0])
-                )
-                ->has("products.1", fn (AssertableJson $json) => 
-                    $json
-                        ->where('id', $products[1]->id)
-                        ->where('quantity', $quantity[1])
-                )
-                ->has("products.2", fn (AssertableJson $json) => 
-                    $json
-                        ->where('id', $products[2]->id)
-                        ->where('quantity', $quantity[2])
-                )
-                ->etc()
-            );
+            $json->has("data", fn (AssertableJson $json) =>
+                $json    
+                    ->where('id', $order->id)
+                    ->where('total_price', $totalPrice)
+                    ->has("products", 3)
+                    ->has("products.0", fn (AssertableJson $json) => 
+                        $json
+                            ->where('id', $products[0]->id)
+                            ->where('quantity', $quantity[0])
+                    )
+                    ->has("products.1", fn (AssertableJson $json) => 
+                        $json
+                            ->where('id', $products[1]->id)
+                            ->where('quantity', $quantity[1])
+                    )
+                    ->has("products.2", fn (AssertableJson $json) => 
+                        $json
+                            ->where('id', $products[2]->id)
+                            ->where('quantity', $quantity[2])
+                    )
+                    ->etc()
+            )
+        );
     }
 
     public function test_update_stock() : void {

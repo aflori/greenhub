@@ -14,17 +14,23 @@ class OrderRessource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $myProduct = $this->products[0];
+        
         
         return [
             "id" => $this->id,
             "total_price" => $this->total_price,
-            "products" => [
-                [
-                    "id" => $myProduct->id,
-                    "quantity" => $myProduct->pivot->quantity,
-                ],
-            ],
+            "products" => getProductArray($this->products),
         ];
     }
+}
+
+function getProductArray($products): array {
+    $array = [];
+    foreach($products as $product) {
+        $array[] = [
+            "id" => $product->id,
+            "quantity" => $product->pivot->quantity,
+        ];
+    }
+    return $array;
 }
