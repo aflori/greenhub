@@ -37,6 +37,6 @@ class Order extends Model
     // we can use $this->products->pivot to gain access to associated table's fields
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, "orders_has_products");
+        return $this->belongsToMany(Product::class, "orders_has_products")->withPivot(["quantity", "unit_price", "unit_price_vat"]);
     }
 }
