@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\Adress;
 
+use App\Http\Resources\OrderRessource;
 
 class OrderController extends Controller
 {
@@ -44,7 +45,7 @@ class OrderController extends Controller
         $newOrder->facturation_adress = $adress->id;
         $newOrder->delivery_adress = $adress->id;
         $newOrder->save();
-        return $newOrder;
+        return new OrderRessource($newOrder);
     }
 
     /*
