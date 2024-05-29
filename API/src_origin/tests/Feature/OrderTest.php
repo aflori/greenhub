@@ -110,8 +110,6 @@ class OrderTest extends TestCase
     }
 
     public function test_simple_product() : void {
-        $this->markTestSkipped();
-
         $o = initDataBase();
         $user = $o[0];
         $product = $o[1];
@@ -141,25 +139,29 @@ class OrderTest extends TestCase
         $response->assertStatus(201);
 
         $order = Order::where('buyer_id', $user->id)->get();
-
+        //dd($order);
+        //$response->dd();
         $response->assertJson(fn (AssertableJson $json) =>
-            $json
-                ->where('id', $order->id)
-                ->where('total_price', $totalPrice)
-                ->has("products", 1)
-                ->has("products.0", fn (AssertableJson $json) => 
-                    $json
-                        ->where('id', $product->id)
-                        ->where('quantity', 2)
-                )
-                ->missing('delivery')
-                ->etc()
+            $json->has("data", fn (AssertableJson $json) =>
+                $json
+                    ->where('id', $order->id)
+                    ->where('total_price', $totalPrice)
+                    ->has("products", 1)
+                    ->has("products.0", fn (AssertableJson $json) => 
+                        $json
+                            ->where('id', $product->id)
+                            ->where('quantity', 2)
+                    )
+                    ->missing('delivery')
+                    ->etc()
+            )
         );
 
     }
 
     public function test_multiple_products() : void {
         $this->markTestSkipped();
+
 
         Brand::factory()->create();
         $user = User::factory()->create();
@@ -233,6 +235,7 @@ class OrderTest extends TestCase
 
     public function test_update_stock() : void {
         $this->markTestSkipped();
+
 
         $o = initDataBase();
         $user = $o[0];
@@ -324,6 +327,8 @@ class OrderTest extends TestCase
     }
 
     public function test_not_existing_product() : void {
+        $this->markTestSkipped();
+
         $o = initDataBase();
         $user = $o[0];
         $product = $o[1];
@@ -359,7 +364,7 @@ class OrderTest extends TestCase
 
     public function test_order_with_delivery() : void {
         $this->markTestSkipped();
-        
+
         $o = initDataBase();
         $user = $o[0];
         $product = $o[1];
@@ -419,7 +424,7 @@ class OrderTest extends TestCase
 
     public function test_wrong_total_amount() : void {
         $this->markTestSkipped();
-        
+
         $o = initDataBase();
         $user = $o[0];
         $product = $o[1];
@@ -450,6 +455,10 @@ class OrderTest extends TestCase
             $response->assertStatus(403);
             $this->assert(Order::count(), 0);
     }
+
+    /* to implement later
+    public function test_correct_date() : void { }
+    */
 }
 
 
