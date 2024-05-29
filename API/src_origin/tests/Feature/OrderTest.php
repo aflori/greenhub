@@ -458,6 +458,7 @@ class OrderTest extends TestCase
 
     /* to implement later
     public function test_correct_date() : void { }
+    public function test_correct_value_pivot_table_with_products(): void {}
     */
 }
 

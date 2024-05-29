@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Order\CreateOrderRequest;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\Product;
 use App\Models\Adress;
 
 use App\Http\Resources\OrderRessource;
@@ -35,6 +36,7 @@ class OrderController extends Controller
         $adress = Adress::factory()->create();
 
         $totalAmount = $request->post("total_amount");
+        $productsBuyed = $request->post("products");
 
         $newOrder->number = 0;
         $newOrder->order_date = "1/1/2020";
@@ -46,6 +48,16 @@ class OrderController extends Controller
         $newOrder->buyer_id = $user->id;
         $newOrder->facturation_adress = $adress->id;
         $newOrder->delivery_adress = $adress->id;
+        $newOrder->save();
+
+        $productBuyedId = $productsBuyed[0]['id'];
+        $productBuyedQuantity = $productsBuyed[0]['quantity'];
+
+        $newOrder->products()->attach($productBuyedId, [
+            "quantity" => $productBuyedQuantity,
+            "unit_price" => "0",
+            "unit_price_vat" => 0.0
+        ]);
         $newOrder->save();
         return new OrderRessource($newOrder);
     }
