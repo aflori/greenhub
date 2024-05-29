@@ -138,7 +138,7 @@ class OrderTest extends TestCase
 
         $response->assertStatus(201);
 
-        $order = Order::where('buyer_id', $user->id)->get();
+        $order = Order::where('buyer_id', $user->id)->first();
         //dd($order);
         //$response->dd();
         $response->assertJson(fn (AssertableJson $json) =>

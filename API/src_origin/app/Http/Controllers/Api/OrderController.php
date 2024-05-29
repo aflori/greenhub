@@ -31,7 +31,7 @@ class OrderController extends Controller
 
         // $newOrder->save();
         // return $newOrder;
-        $user = User::factory()->create();
+        $user = $request->user();
         $adress = Adress::factory()->create();
 
         $newOrder->number = 0;
