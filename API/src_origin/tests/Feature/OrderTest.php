@@ -233,9 +233,6 @@ class OrderTest extends TestCase
     }
 
     public function test_update_stock() : void {
-        $this->markTestSkipped();
-
-
         $o = initDataBase();
         $user = $o[0];
         $product = $o[1];
@@ -243,6 +240,8 @@ class OrderTest extends TestCase
         while( $product->stock <= 3) {
             $product = Product::factory()->create();
         }
+
+        $stockBeforeRequest = $product->stock;
 
         $totalPrice = getPriceWithVat(3*$product->price, $product->vat_rate);
         $response = $this
@@ -268,20 +267,24 @@ class OrderTest extends TestCase
 
         $response->assertStatus(201);
 
-        $order = Order::where('buyer_id', $user->id)->get();
+        $order = Order::where('buyer_id', $user->id)->first();
 
         $response->assertJson(fn (AssertableJson $json) =>
-            $json
-                ->has("products.0", fn (AssertableJson $json) => 
-                    $json
-                        ->where('id', $product->id)
-                )
-                ->etc()
+            $json->has('data', fn (AssertableJson $json) =>
+                $json
+                    ->has("products.0", fn (AssertableJson $json) => 
+                        $json
+                            ->where('id', $product->id)
+                            ->has('quantity')
+                    )
+                    ->etc()
+            )
         );
 
-        $updatedProduct = Product::find($product->id);
+        $product = Product::find($product->id);
 
-        $this->assertEquals($updatedProduct->stock, $product->stock - 3);
+        dd($product->stock, $stockBeforeRequest);
+        $this->assertEquals($product->stock, $stockBeforeRequest - 3);
     }
 
     public function test_out_of_stock(): void {
@@ -458,6 +461,7 @@ class OrderTest extends TestCase
     /* to implement later
     public function test_correct_date() : void { }
     public function test_correct_value_pivot_table_with_products(): void {}
+    public function test_same_product_has_2_command(): void {}
     */
 }
 
