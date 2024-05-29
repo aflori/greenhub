@@ -428,8 +428,8 @@ class OrderTest extends TestCase
                                 ->where("city", "Toto")
                                 ->where("zip_code", "00001")
                         )
-                        ->has('delivery.fee')
-                        ->has('delivery.date')
+                        ->where('delivery.fee', 0.5)
+                        ->has('delivery.date', "02/01/2025")
                         ->etc()
                 )
                 
