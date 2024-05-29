@@ -18,8 +18,10 @@ class OrderRessource extends JsonResource
             "id" => $this->id,
             "total_price" => $this->total_price,
             "products" => [
-                "id" => 0,
-                "quantity" => 2,
+                [
+                    "id" => 0,
+                    "quantity" => 2,
+                ],
             ],
         ];
     }
