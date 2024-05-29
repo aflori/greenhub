@@ -287,8 +287,6 @@ class OrderTest extends TestCase
     }
 
     public function test_out_of_stock(): void {
-        $this->markTestSkipped();
-
         $o = initDataBase();
         $user = $o[0];
         $product = $o[1];
@@ -363,7 +361,8 @@ class OrderTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_order_with_delivery() : void {
+    // update to confirm adress is ok
+    public function test_order_with_delivery() : void { 
         $this->markTestSkipped();
 
         $o = initDataBase();
@@ -459,9 +458,10 @@ class OrderTest extends TestCase
 
     /* to implement later
     public function test_stock_failed_after_other_command(): void {}
-    public function test_correct_date() : void { }
+    public function test_order_table_has_correct_field() : void { }
     public function test_correct_value_pivot_table_with_products(): void {}
     public function test_same_product_has_2_command(): void {}
+    public function test_adress_is_ok(): void {}
     */
 }
 
