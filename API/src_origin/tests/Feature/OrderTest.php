@@ -429,7 +429,7 @@ class OrderTest extends TestCase
                                 ->where("zip_code", "00001")
                         )
                         ->where('delivery.fee', 0.5)
-                        ->has('delivery.date', "02/01/2025")
+                        ->where('delivery.date', "02/01/2025")
                         ->etc()
                 )
                 

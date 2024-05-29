@@ -33,6 +33,8 @@ class OrderController extends Controller
 
         $totalAmount = $request->post("total_amount");
         $productsBuyed = $request->post("products");
+        $deliveryDate = $request->post("delivery_date") ?? "1/1/2020";
+        $shippingFee = $request->post("shipping_fee") ?? 0;
 
         if (is_invalid_stock($productsBuyed)) {
             return response()->json(["error" => "unavailable products"], 403);
@@ -45,10 +47,10 @@ class OrderController extends Controller
 
         $newOrder->number = 0;
         $newOrder->order_date = "1/1/2020";
-        $newOrder->delivery_date = "1/1/2020";
+        $newOrder->delivery_date = $deliveryDate;
         $newOrder->bill = 0.0;
         $newOrder->vat_rate = 0.0;
-        $newOrder->shipping_fee = 0.0;
+        $newOrder->shipping_fee = $shippingFee;
         $newOrder->total_price = $totalAmount;
         $newOrder->buyer_id = $user->id;
         $newOrder->facturation_adress = $adress->id;
