@@ -54,14 +54,18 @@ class OrderController extends Controller
 
             $productBuyedId = $product['id'];
             $productBuyedQuantity = $product['quantity'];
+            $productBuyed = Product::find($productBuyedId);
     
-            $newOrder->products()->attach($productBuyedId, [
+            $newOrder->products()->attach($productBuyed, [
                 "quantity" => $productBuyedQuantity,
                 "unit_price" => "0",
                 "unit_price_vat" => 0.0
             ]);
+
+            $productBuyed->stock -= $productBuyedQuantity;
+            $productBuyed->save();
         }
-        $newOrder->save();
+
         return new OrderRessource($newOrder);
     }
 

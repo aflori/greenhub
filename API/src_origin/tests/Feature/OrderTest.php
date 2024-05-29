@@ -283,7 +283,6 @@ class OrderTest extends TestCase
 
         $product = Product::find($product->id);
 
-        dd($product->stock, $stockBeforeRequest);
         $this->assertEquals($product->stock, $stockBeforeRequest - 3);
     }
 
@@ -459,6 +458,7 @@ class OrderTest extends TestCase
     }
 
     /* to implement later
+    public function test_stock_failed_after_other_command(): void {}
     public function test_correct_date() : void { }
     public function test_correct_value_pivot_table_with_products(): void {}
     public function test_same_product_has_2_command(): void {}
