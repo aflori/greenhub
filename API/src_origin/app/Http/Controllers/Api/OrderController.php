@@ -35,7 +35,7 @@ class OrderController extends Controller
 
         $totalAmount = $request->post("total_amount");
         $productsBuyed = $request->post("products");
-        $facturationDate = "01/01/0001";
+        $facturationDate = "01/01/01";
         $deliveryDate = $request->post("delivery_date") ?? $facturationDate;
         $shippingFee = $request->post("shipping_fee") ?? 0;
 
@@ -121,13 +121,17 @@ function is_valid_stock(array $listOfProductBuyed): bool {
 }
 
 function getAdressModel(array|null $adressArray): Adress|null {
-    if ($adressArray === null) return null;
+    if ($adressArray === null) {
+        return null;
+    }
+
     $adress = new Adress();
-    $adress->number = 0;
-    $adress->road = "";
-    $adress->postal_code = 0;
-    $adress->city = "";
+    $adress->number = $adressArray["road_number"];
+    $adress->road = $adressArray["road_name"];
+    $adress->postal_code = $adressArray["zip_code"];
+    $adress->city = $adressArray["city"];
     $adress->country = "France";
     $adress->save();
+    
     return $adress;
 }

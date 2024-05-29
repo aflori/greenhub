@@ -21,14 +21,16 @@ class OrderRessource extends JsonResource
         ];
 
         if ($this->hasADelivery()) {
+            $deliveryAdress = $this->deliveryAdress;
+
             $result["delivery"] = [
                 "fee" => $this->shipping_fee,
                 "date" => $this->delivery_date,
                 "adress" => [
-                    "road_number" => 1,
-                    "road_name" => "allée des toto",
-                    "city" => "Toto",
-                    "zip_code" => "00001"
+                    "road_number" => $deliveryAdress->number,
+                    "road_name" => $deliveryAdress->road,
+                    "city" => $deliveryAdress->city,
+                    "zip_code" => getZipCode($deliveryAdress->postal_code)
                 ]
             ];
         }
@@ -49,4 +51,12 @@ function getProductArray($products): array {
         ];
     }
     return $array;
+}
+
+function getZipCode(int $intValue): string {
+    $strZipCode = (string) $intValue;
+    while(strlen($strZipCode) < 5) {
+        $strZipCode = '0' . $strZipCode;
+    }
+    return $strZipCode;
 }
