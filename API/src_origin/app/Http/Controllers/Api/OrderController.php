@@ -34,13 +34,15 @@ class OrderController extends Controller
         $user = $request->user();
         $adress = Adress::factory()->create();
 
+        $totalAmount = $request->post("total_amount");
+
         $newOrder->number = 0;
         $newOrder->order_date = "1/1/2020";
         $newOrder->delivery_date = "1/1/2020";
         $newOrder->bill = 0.0;
         $newOrder->vat_rate = 0.0;
         $newOrder->shipping_fee = 0.0;
-        $newOrder->total_price = 0.0;
+        $newOrder->total_price = $totalAmount;
         $newOrder->buyer_id = $user->id;
         $newOrder->facturation_adress = $adress->id;
         $newOrder->delivery_adress = $adress->id;
