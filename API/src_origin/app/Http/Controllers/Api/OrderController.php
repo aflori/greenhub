@@ -28,15 +28,20 @@ class OrderController extends Controller
      */
     public function store(CreateOrderRequest $request)
     {
-        $newOrder = new Order();
-
-        // $newOrder->save();
-        // return $newOrder;
         $user = $request->user();
         $adress = Adress::factory()->create();
 
         $totalAmount = $request->post("total_amount");
         $productsBuyed = $request->post("products");
+
+        if (is_invalid_stock($productsBuyed)) {
+            return response()->json(["error" => "unavailable products"], 403);
+        }
+        
+        $newOrder = new Order();
+
+        // $newOrder->save();
+        // return $newOrder;
 
         $newOrder->number = 0;
         $newOrder->order_date = "1/1/2020";
@@ -92,4 +97,20 @@ class OrderController extends Controller
             return $order;
         }
     */
+}
+
+
+function is_invalid_stock(array $listOfProductBuyed): bool {
+    return !is_valid_stock($listOfProductBuyed);
+}
+
+function is_valid_stock(array $listOfProductBuyed): bool {
+    foreach($listOfProductBuyed as $buyedProduct) {
+        $dbProduct = Product::find($buyedProduct['id']);
+        if($dbProduct->stock < $buyedProduct['quantity']) {
+            return false;
+        }
+    }
+
+    return true;
 }
