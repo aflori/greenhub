@@ -30,19 +30,22 @@ class OrderController extends Controller
     {
         $user = $request->user();
         $facturationAdress = Adress::factory()->create();
+
         $deliveryAdress = getAdressModel($request->post("delivery_adress")) ?? $facturationAdress;
-
-
         $totalAmount = $request->post("total_amount");
         $productsBuyed = $request->post("products");
         $facturationDate = "01/01/01";
         $deliveryDate = $request->post("delivery_date") ?? $facturationDate;
-        $shippingFee = $request->post("shipping_fee") ?? 0;
+        $shippingFee = $request->post("shipping_fee") ?? 0.0;
 
-        if (is_invalid_stock($productsBuyed)) {
+        if (isInvalidStock($productsBuyed)) {
             return response()->json(["error" => "unavailable products"], 403);
         }
-        
+
+        if (isInvalidGlobalAmount($totalAmount, $productsBuyed, $shippingFee)) {
+            return response()->json(["error" => "incorrect total amount price"], 403);
+        }
+
         $newOrder = new Order();
 
         // $newOrder->save();
@@ -105,11 +108,11 @@ class OrderController extends Controller
 }
 
 
-function is_invalid_stock(array $listOfProductBuyed): bool {
-    return !is_valid_stock($listOfProductBuyed);
+function isInvalidStock(array $listOfProductBuyed): bool {
+    return !isValidStock($listOfProductBuyed);
 }
 
-function is_valid_stock(array $listOfProductBuyed): bool {
+function isValidStock(array $listOfProductBuyed): bool {
     foreach($listOfProductBuyed as $buyedProduct) {
         $dbProduct = Product::find($buyedProduct['id']);
         if($dbProduct->stock < $buyedProduct['quantity']) {
@@ -134,4 +137,31 @@ function getAdressModel(array|null $adressArray): Adress|null {
     $adress->save();
     
     return $adress;
+}
+
+function isInvalidGlobalAmount(float $totalAmount,array $productsBuyed,float $shippingFee): bool {
+    return !isValidGlobalAmount($totalAmount, $productsBuyed, $shippingFee);
+}
+
+function isValidGlobalAmount(float $totalAmount,array $productsBuyed, float $shippingFee): bool {
+    $trueTotalAmount = $shippingFee;
+    $totalAmount = round($totalAmount, 2);
+
+    foreach($productsBuyed as $productBuyed) {
+        $product = Product::find($productBuyed['id']);
+        $quantity = $productBuyed["quantity"];
+
+        $unitProductPrice = getUnitProductPrice($product);
+        $trueTotalAmount += $quantity * $unitProductPrice;
+    }
+
+    $trueTotalAmount = round($trueTotalAmount, 2);
+    return $trueTotalAmount === $totalAmount;
+}
+
+function getUnitProductPrice(Product $product): float {
+    $price = $product->price;
+    $vat = $product->vat_rate * $price;
+
+    return $price + $vat;
 }
