@@ -145,6 +145,7 @@ class OrderTest extends TestCase
 
         $response->assertStatus(201);
 
+        $this->assertEquals(Order::count(), 1);
         $order = Order::where('buyer_id', $user->id)->first();
         //dd($order);
         //$response->dd();
@@ -215,6 +216,7 @@ class OrderTest extends TestCase
 
         $response->assertStatus(201);
 
+        $this->assertEquals(Order::count(), 1);
         $order = Order::where('buyer_id', $user->id)->first();
 
         $response->assertJson(fn (AssertableJson $json) =>
@@ -330,10 +332,13 @@ class OrderTest extends TestCase
             ]);
         
             $response->assertStatus(403);
+            $response->assertJson([
+                "error" => "unavailable products"
+            ]);
 
-            $sameProductWithUpdate = Product::find($product->id);
-            $this->assertEquals($product->stock, $sameProductWithUpdate->stock);
-            $this->assertEquals(Order::count(), 0);
+        $sameProductWithUpdate = Product::find($product->id);
+        $this->assertEquals($product->stock, $sameProductWithUpdate->stock);
+        $this->assertEquals(Order::count(), 0);
     }
 
     public function test_not_existing_product() : void {
@@ -370,7 +375,6 @@ class OrderTest extends TestCase
         $response->assertStatus(422);
     }
 
-    // update to confirm adress is ok
     public function test_order_with_delivery() : void {
         $o = initDataBase();
         $user = $o[0];
@@ -381,7 +385,8 @@ class OrderTest extends TestCase
             $product->save();
         }
 
-        $totalPrice = getPriceWithVat(1*$product->price, $product->vat_rate);
+        $shippingFee = 0.5;
+        $totalPrice = getPriceWithVat(1*$product->price, $product->vat_rate) + $shippingFee;
         $response = $this
             ->withHeaders([
                 'accept' => 'application/json',
@@ -401,7 +406,7 @@ class OrderTest extends TestCase
                         "quantity" => 1
                     ]
                 ],
-                "shipping_fee" => 0.5,
+                "shipping_fee" => $shippingFee,
                 "delivery_date" => "02/01/2025",
                 "delivery_adress" => [
                     "road_number" => 1,
@@ -437,11 +442,14 @@ class OrderTest extends TestCase
     }
 
     public function test_wrong_total_amount() : void {
-        $this->markTestSkipped();
-
         $o = initDataBase();
         $user = $o[0];
         $product = $o[1];
+
+        if( $product->stock < 1) {
+            $product->stock = 2;
+            $product->save();
+        }
 
         $totalPrice = getPriceWithVat(2*$product->price, $product->vat_rate);
         $response = $this
@@ -466,8 +474,11 @@ class OrderTest extends TestCase
             ]);
 
 
-            $response->assertStatus(403);
-            $this->assert(Order::count(), 0);
+        $response->assertStatus(403);
+        $response->assertJson([
+            "error" => "incorrect total amount price"
+        ]);
+        $this->assertEquals(Order::count(), 0);
     }
 
     /* to implement later
@@ -480,6 +491,7 @@ class OrderTest extends TestCase
     public function test_existing_adress_facturation(): void {}
     public function test_existing_adress_delivery(): void {}
     public function test_same_adress_facturation_and_delivery(): void {}
+    public function test_invalid_shipping_fee(): void {}
     */
 }
 
@@ -493,5 +505,6 @@ function initDataBase() {
 }
 
 function getPriceWithVat(float $priceWithoutVat, float $vatRate): float {
-    return $priceWithoutVat * (1 + $vatRate);
+    $vat = $priceWithoutVat * $vatRate;
+    return $priceWithoutVat + $vat;
 }
