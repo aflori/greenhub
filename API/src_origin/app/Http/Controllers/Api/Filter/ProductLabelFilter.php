@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Http\Controllers\Api\Filter;
 
 class ProductLabelFilter
 {
-    function __invoke($query, string $labelName)
+    public function __invoke($query, string $labelName)
     {
         $relationName = 'labels';
 
@@ -12,7 +13,7 @@ class ProductLabelFilter
 
     protected function getFilterAction(string $valueTested): callable
     {
-        $columnName = "name";
+        $columnName = 'name';
 
         return function ($query) use ($columnName, $valueTested) {
             $query->where($columnName, $valueTested);

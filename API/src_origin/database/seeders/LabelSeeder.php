@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Label;
 use App\Models\Product;
-require_once __DIR__ .'/../utility.php';
+use Illuminate\Database\Seeder;
+
+require_once __DIR__.'/../utility.php';
 
 class LabelSeeder extends Seeder
 {
@@ -17,6 +17,6 @@ class LabelSeeder extends Seeder
     {
         Label::factory(15)->create();
 
-        createManyToManyToAllParent(Product::class, Label::class, "labels", 1);
+        createManyToManyToAllParent(Product::class, Label::class, 'labels', 1);
     }
 }

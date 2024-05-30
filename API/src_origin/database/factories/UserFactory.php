@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use App\Models\Company;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -33,7 +32,7 @@ class UserFactory extends Factory
             // default value from laravel file generation
             // create only 1 hash per seeding
             'password' => static::$password ??= Hash::make('password'),
-            'role' =>  "client",
+            'role' => 'client',
             'remember_token' => null,
             'created_at' => now(),
             'updated_at' => now(),
@@ -51,9 +50,6 @@ class UserFactory extends Factory
         ]);
     }
 
-
-
-
     /**
      * Define user role as company member
      */
@@ -62,30 +58,34 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             $associatedCompany = Company::inRandomOrder()->first();
 
-            $attributes["role"] = "company";
+            $attributes['role'] = 'company';
             $attributes['company_id'] = $associatedCompany->id;
 
             return $attributes;
         });
     }
+
     /**
      * Define user role as admin
      */
     public function grantAdminRole(): Factory
     {
         return $this->state(function (array $attributes) {
-            $attributes["role"] = "admin";
+            $attributes['role'] = 'admin';
             $attributes['company_id'] = null;
+
             return $attributes;
         });
     }
+
     /**
      * reset user role
      */
     public function resetRole(): Factory
     {
         return $this->state(function (array $attributes) {
-            $attributes["role"] = "client";
+            $attributes['role'] = 'client';
+
             return $attributes;
         });
     }

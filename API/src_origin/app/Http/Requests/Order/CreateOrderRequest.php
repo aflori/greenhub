@@ -23,29 +23,29 @@ class CreateOrderRequest extends FormRequest
     {
         return [
             // the total amount of the order decided with taxes and shiping fee included
-            "total_amount" => "required|numeric",
+            'total_amount' => 'required|numeric',
             // the total amount of shipping fee
-            "shipping_fee" => "nullable|numeric",
+            'shipping_fee' => 'nullable|numeric',
             // the wanted delivery date at format 05/04/2024
-            "delivery_date" => "present_with:shipping_fee|date",
+            'delivery_date' => 'present_with:shipping_fee|date',
             // the facturation adress
-            "facturation_adress" => "required|array",
-            "facturation_adress.road_number" => "required|integer",
-            "facturation_adress.road_name" => "required|regex:/^[\\pL\\s-]+$/u",
-            "facturation_adress.city" => "required|alpha_dash",
-            "facturation_adress.zip_code" => "required|alpha_num",
+            'facturation_adress' => 'required|array',
+            'facturation_adress.road_number' => 'required|integer',
+            'facturation_adress.road_name' => 'required|regex:/^[\\pL\\s-]+$/u',
+            'facturation_adress.city' => 'required|alpha_dash',
+            'facturation_adress.zip_code' => 'required|alpha_num',
             // the delivery adress if relevent
-            "delivery_adress" => "present_with:shipping_fee|array",
-            "delivery_adress.road_number" => "present_with:shipping_fee|integer",
-            "delivery_adress.road_name" => "present_with:shipping_fee|regex:/^[\\pL\\s-]+$/u",
-            "delivery_adress.city" => "present_with:shipping_fee|alpha_dash",
-            "delivery_adress.zip_code" => "present_with:shipping_fee|alpha_num",
+            'delivery_adress' => 'present_with:shipping_fee|array',
+            'delivery_adress.road_number' => 'present_with:shipping_fee|integer',
+            'delivery_adress.road_name' => 'present_with:shipping_fee|regex:/^[\\pL\\s-]+$/u',
+            'delivery_adress.city' => 'present_with:shipping_fee|alpha_dash',
+            'delivery_adress.zip_code' => 'present_with:shipping_fee|alpha_num',
             // the list of product buyed
-            "products" => "required|array",
+            'products' => 'required|array',
             // list of id of selected products (uuid)
-            "products.*" => "required|array",
-            "products.*.id" => "required|exists:products,id",
-            "products.*.quantity" => "required|integer",
+            'products.*' => 'required|array',
+            'products.*.id' => 'required|exists:products,id',
+            'products.*.quantity' => 'required|integer',
         ];
     }
 }

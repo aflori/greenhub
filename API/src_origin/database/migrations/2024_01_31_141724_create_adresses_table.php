@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('adresses', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->integer("number");
-            $table->string("road", 150);
-            $table->integer("postal_code");
-            $table->string("city", 50);
-            $table->string("country", 75);
+            $table->uuid('id')->primary();
+            $table->integer('number');
+            $table->string('road', 150);
+            $table->integer('postal_code');
+            $table->string('city', 50);
+            $table->string('country', 75);
         });
     }
 

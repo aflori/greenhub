@@ -1,11 +1,10 @@
 <?php
+
 namespace App\Http\Controllers\Api\Filter;
 
 class ProductEnvironmentSort
 {
-
-
-    function __invoke($query, $minimalValue)
+    public function __invoke($query, $minimalValue)
     {
         $columnName = 'environmental_impact';
         $sortOrder = ' DESC';
@@ -13,6 +12,6 @@ class ProductEnvironmentSort
         // (`ORDER BY environmental_impact DESC` SQL request part)
 
         return $query->where($columnName, '>=', $minimalValue)
-                     ->orderByRaw($columnName . $sortOrder);
+            ->orderByRaw($columnName.$sortOrder);
     }
 }

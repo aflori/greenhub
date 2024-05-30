@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdressController;
 use App\Http\Controllers\Api\BlogArticleController;
 use App\Http\Controllers\Api\BrandController;
@@ -9,11 +7,13 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\CompanyController;
 use App\Http\Controllers\Api\DiscountController;
-// use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\LabelController;
 use App\Http\Controllers\Api\OrderController;
+// use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UserController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,18 +31,17 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 // Route::apiResource('products', ProductController::class);
-Route::get('/products', [ProductController::class, "index"]);
-Route::apiResource("product", ProductController::class)->except("index");
-Route::post('/product/{product}/comment', [ProductController::class, "comment"])->middleware(['auth:sanctum', 'XSS']);
+Route::get('/products', [ProductController::class, 'index']);
+Route::apiResource('product', ProductController::class)->except('index');
+Route::post('/product/{product}/comment', [ProductController::class, 'comment'])->middleware(['auth:sanctum', 'XSS']);
 
-Route::apiResource('orders', OrderController::class)->only(["store"])->middleware(["auth:sanctum"]);
-
+Route::apiResource('orders', OrderController::class)->only(['store'])->middleware(['auth:sanctum']);
 
 Route::apiResource('users', UserController::class);
 Route::apiResource('articles', BlogArticleController::class);
 Route::apiResource('companies', CompanyController::class);
 
-Route::middleware('isAdmin')->group(function() {
+Route::middleware('isAdmin')->group(function () {
     Route::apiResource('adresses', AdressController::class);
     Route::apiResource('brands', BrandController::class);
     Route::apiResource('categories', CategoryController::class);

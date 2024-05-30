@@ -6,8 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-require_once __DIR__ . '/utility.php';
-
+require_once __DIR__.'/utility.php';
 
 class IsAuthentifiedAsAdmin
 {
@@ -19,11 +18,12 @@ class IsAuthentifiedAsAdmin
     public function handle(Request $request, Closure $next): Response
     {
 
-        if( $request->user() == null || //unconnected
-            $request->user()->role !== "admin") {
+        if ($request->user() == null || //unconnected
+            $request->user()->role !== 'admin') {
 
             return getResponseMiddlewareError();
         }
+
         return $next($request);
     }
 }

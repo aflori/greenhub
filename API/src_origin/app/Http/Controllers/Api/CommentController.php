@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Comment;
+use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
@@ -20,28 +20,33 @@ class CommentController extends Controller
             $newComment->$columnName = $columnValue;
         }
         $newComment->save();
+
         return $newComment;
     }
 
-    public function show(Comment $comment ) {
+    public function show(Comment $comment)
+    {
         return $comment;
     }
 
     public function update(Request $request, Comment $comment)
     {
-        if ( isset($request->id) ) {
-            return response()->json(["error" => "cannot change id"], 404);
+        if (isset($request->id)) {
+            return response()->json(['error' => 'cannot change id'], 404);
         }
 
         foreach ($request->request as $attributeName => $attributeValue) {
             $comment->$attributeName = $attributeValue;
         }
         $comment->save();
+
         return $comment;
     }
 
-    public function destroy(Comment $comment) {
+    public function destroy(Comment $comment)
+    {
         $comment->delete();
+
         return $comment;
     }
 }

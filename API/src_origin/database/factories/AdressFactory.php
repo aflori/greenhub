@@ -17,11 +17,11 @@ class AdressFactory extends Factory
     public function definition(): array
     {
         return [
-            "number" => fake()->randomNumber(2, false),
-            "road" => fake()->lexify("rue de ??????????"),
-            "postal_code" => fake()->randomNumber(5, true),
-            "city" => fake()->regexify("[A-Z]{1}[a-z]{5}"),
-            "country" => "France"
+            'number' => fake()->randomNumber(2, false),
+            'road' => fake()->lexify('rue de ??????????'),
+            'postal_code' => fake()->randomNumber(5, true),
+            'city' => fake()->regexify('[A-Z]{1}[a-z]{5}'),
+            'country' => 'France',
         ];
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Image extends Model
 {
@@ -23,6 +23,7 @@ class Image extends Model
     {
         return $this->morphTo(__FUNCTION__, 'table', 'table_key');
     }
+
     public function images(): MorphMany
     {
         return $this->morphMany(Image::class, __FUNCTION__, 'table', 'table_key');

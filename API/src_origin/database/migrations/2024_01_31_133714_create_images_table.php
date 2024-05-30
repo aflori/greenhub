@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('images', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->string("name", 100);
-            $table->string("table", 75);
-            $table->uuid("table_key");
+            $table->uuid('id')->primary();
+            $table->string('name', 100);
+            $table->string('table', 75);
+            $table->uuid('table_key');
 
         });
     }

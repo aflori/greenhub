@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class XSS
 {
@@ -20,6 +19,7 @@ class XSS
             $userInput = strip_tags($userInput);
         });
         $request->merge($userInput);
+
         return $next($request);
     }
 }
