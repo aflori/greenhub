@@ -20,7 +20,6 @@ class OrderTest extends TestCase
     {
         $object = initDataBase();
         $user = $object[0];
-        $product = $object[1];
 
         $response = $this
             ->withHeaders([
@@ -101,7 +100,7 @@ class OrderTest extends TestCase
 
     public function test_request_not_authentificated(): void
     {
-        $o = initDataBase();
+        initDataBase();
         $response = $this
             //->withSession([])
             ->withHeaders([
@@ -149,8 +148,8 @@ class OrderTest extends TestCase
 
         $response->assertStatus(201);
 
-        $this->assertEquals(Order::count(), 1);
-        $order = Order::where('buyer_id', $user->id)->first();
+        $this->assertEquals(\App\Models\Order::query()->count(), 1);
+        $order = \App\Models\Order::query()->where('buyer_id', $user->id)->first();
         //dd($order);
         //$response->dd();
         $response->assertJson(fn (AssertableJson $json) => $json->has('data', fn (AssertableJson $json) => $json
@@ -218,8 +217,8 @@ class OrderTest extends TestCase
 
         $response->assertStatus(201);
 
-        $this->assertEquals(Order::count(), 1);
-        $order = Order::where('buyer_id', $user->id)->first();
+        $this->assertEquals(\App\Models\Order::query()->count(), 1);
+        $order = \App\Models\Order::query()->where('buyer_id', $user->id)->first();
 
         $response->assertJson(fn (AssertableJson $json) => $json->has('data', fn (AssertableJson $json) => $json
             ->where('id', $order->id)
@@ -278,7 +277,7 @@ class OrderTest extends TestCase
 
         $response->assertStatus(201);
 
-        $order = Order::where('buyer_id', $user->id)->first();
+        \App\Models\Order::query()->where('buyer_id', $user->id)->first();
 
         $response->assertJson(fn (AssertableJson $json) => $json->has('data', fn (AssertableJson $json) => $json
             ->has('products.0', fn (AssertableJson $json) => $json
@@ -289,7 +288,7 @@ class OrderTest extends TestCase
         )
         );
 
-        $product = Product::find($product->id);
+        $product = \App\Models\Product::query()->find($product->id);
 
         $this->assertEquals($product->stock, $stockBeforeRequest - 3);
     }
@@ -332,9 +331,9 @@ class OrderTest extends TestCase
             'error' => 'unavailable products',
         ]);
 
-        $sameProductWithUpdate = Product::find($product->id);
+        $sameProductWithUpdate = \App\Models\Product::query()->find($product->id);
         $this->assertEquals($product->stock, $sameProductWithUpdate->stock);
-        $this->assertEquals(Order::count(), 0);
+        $this->assertEquals(\App\Models\Order::query()->count(), 0);
     }
 
     public function test_not_existing_product(): void
@@ -367,7 +366,7 @@ class OrderTest extends TestCase
                 ],
             ]);
 
-        $this->assertEquals(Order::count(), 0);
+        $this->assertEquals(\App\Models\Order::query()->count(), 0);
         $response->assertStatus(422);
     }
 
@@ -415,7 +414,7 @@ class OrderTest extends TestCase
 
         $response->assertStatus(201);
 
-        $order = Order::where('buyer_id', $user->id)->first();
+        $order = \App\Models\Order::query()->where('buyer_id', $user->id)->first();
 
         $response->assertJson(fn (AssertableJson $json) => $json->has('data', fn (AssertableJson $json) => $json->where('id', $order->id)
             ->where('total_price', $totalPrice)
@@ -471,7 +470,7 @@ class OrderTest extends TestCase
         $response->assertJson([
             'error' => 'incorrect total amount price',
         ]);
-        $this->assertEquals(Order::count(), 0);
+        $this->assertEquals(\App\Models\Order::query()->count(), 0);
     }
 
     /* to implement later

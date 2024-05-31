@@ -28,17 +28,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        ResetPassword::createUrlUsing(function (object $notifiable, string $token) {
-            return config('app.frontend_url')."/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}";
-        });
+        ResetPassword::createUrlUsing(fn(object $notifiable, string $token) => config('app.frontend_url')."/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}");
 
-        Gate::define('user_check', function (User $user) {
-            return Auth::check();
-        });
+        Gate::define('user_check', fn(User $user) => Auth::check());
 
-        Gate::define('is_admin', function (User $user) {
-            return $user->role === 'admin';
-        });
+        Gate::define('is_admin', fn(User $user) => $user->role === 'admin');
 
     }
 }

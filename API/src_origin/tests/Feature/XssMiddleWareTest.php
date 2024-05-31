@@ -18,7 +18,6 @@ class XssMiddleWareTest extends TestCase
     public function test_try_to_use_road_without_connection(): void
     {
         $objects = createUserAndProduct();
-        $user = $objects[0];
         $product = $objects[1];
         $url = sprintf($this->urlFormat, $product->id);
 

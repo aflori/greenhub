@@ -21,16 +21,12 @@ class UserController extends Controller
             $userLogged = $request->user();
 
             if ($userLogged->can('canSeeAllUser', User::class)) {
-                $users = User::with(['comments:id,author_id', 'orders:id,buyer_id', 'registeredAdress:id'])->get();
-
-                return $users;
+                return User::with(['comments:id,author_id', 'orders:id,buyer_id', 'registeredAdress:id'])->get();
             } elseif ($userLogged->can('canSeeAllUserInCompany', User::class)) {
-                $users = User::with(['comments:id,author_id', 'orders:id,buyer_id', 'registeredAdress:id'])
+                return User::with(['comments:id,author_id', 'orders:id,buyer_id', 'registeredAdress:id'])
                     ->where('role', '=', 'company')
                     ->where('company_id', '=', $userLogged->company_id)
                     ->get();
-
-                return $users;
             } else {
                 return redirect('/api/users/'.$userLogged->id);
             }
@@ -56,11 +52,11 @@ class UserController extends Controller
     public function show(string $id)
     {
         try {
-            $user = User::findOrFail($id);
+            $user = \App\Models\User::query()->findOrFail($id);
             $user->load('comments', 'orders', 'registeredAdress', 'profilePicture');
 
             return $user;
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException) {
             return response()->json(['error' => 'id not found', 'id' => $id], 404);
         }
     }
@@ -71,7 +67,7 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $originalUser = User::findOrFail($id);
+            $originalUser = \App\Models\User::query()->findOrFail($id);
 
             if (isset($request->id)) {
                 return response()->json(['error' => 'not found'], 404);
@@ -83,7 +79,7 @@ class UserController extends Controller
             $originalUser->save();
 
             return $originalUser;
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException) {
             return response()->json(['error' => 'id not found', 'id' => $id], 404);
         }
     }
@@ -94,11 +90,11 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         try {
-            $originalUser = User::findOrFail($id);
+            $originalUser = \App\Models\User::query()->findOrFail($id);
             $originalUser->delete();
 
             return $originalUser;
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException) {
             return response()->json(['error' => 'id not found', 'id' => $id], 404);
         }
     }

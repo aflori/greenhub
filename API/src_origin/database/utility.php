@@ -37,7 +37,7 @@ function getRandomElementInArray(array $array)
 }
 function setPolymorphicRelation(Model $polymorphicEntity, Model $childEntity, string $childNameInParentColumn, string $childKeyInParentColumn)
 {
-    $polymorphicEntity->$childNameInParentColumn = get_class($childEntity);
+    $polymorphicEntity->$childNameInParentColumn = $childEntity::class;
     $polymorphicEntity->$childKeyInParentColumn = $childEntity->id;
 }
 function createPolymorphicTable(Model $entity, array $potentialChild, string $childNameInParentColumn, string $childKeyInParentColumn)

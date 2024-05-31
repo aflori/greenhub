@@ -14,7 +14,7 @@ class UserFactory extends Factory
     /**
      * The current password being used by the factory.
      */
-    protected static ?string $password;
+    protected static ?string $password = null;
 
     /**
      * Define the model's default state.
@@ -56,7 +56,7 @@ class UserFactory extends Factory
     public function grantCompanyRole(): Factory
     {
         return $this->state(function (array $attributes) {
-            $associatedCompany = Company::inRandomOrder()->first();
+            $associatedCompany = \App\Models\Company::query()->inRandomOrder()->first();
 
             $attributes['role'] = 'company';
             $attributes['company_id'] = $associatedCompany->id;

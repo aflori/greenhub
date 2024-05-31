@@ -66,7 +66,7 @@ class OrderController extends Controller
 
             $productBuyedId = $product['id'];
             $productBuyedQuantity = $product['quantity'];
-            $productBuyed = Product::find($productBuyedId);
+            $productBuyed = \App\Models\Product::query()->find($productBuyedId);
 
             $newOrder->products()->attach($productBuyed, [
                 'quantity' => $productBuyedQuantity,
@@ -114,7 +114,7 @@ function isInvalidStock(array $listOfProductBuyed): bool
 function isValidStock(array $listOfProductBuyed): bool
 {
     foreach ($listOfProductBuyed as $buyedProduct) {
-        $dbProduct = Product::find($buyedProduct['id']);
+        $dbProduct = \App\Models\Product::query()->find($buyedProduct['id']);
         if ($dbProduct->stock < $buyedProduct['quantity']) {
             return false;
         }
@@ -151,7 +151,7 @@ function isValidGlobalAmount(float $totalAmount, array $productsBuyed, float $sh
     $totalAmount = round($totalAmount, 2);
 
     foreach ($productsBuyed as $productBuyed) {
-        $product = Product::find($productBuyed['id']);
+        $product = \App\Models\Product::query()->find($productBuyed['id']);
         $quantity = $productBuyed['quantity'];
 
         $unitProductPrice = getUnitProductPrice($product);

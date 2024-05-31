@@ -39,7 +39,7 @@ class ProductFactory extends Factory
     public function withDiscount(): Factory
     {
         return $this->state(function (array $attributes) {
-            $discount = Discount::inRandomOrder()->first();
+            $discount = \App\Models\Discount::query()->inRandomOrder()->first();
             $attributes['discount_id'] = $discount->id;
 
             return $attributes;

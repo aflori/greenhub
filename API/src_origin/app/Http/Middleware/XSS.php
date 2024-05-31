@@ -16,7 +16,7 @@ class XSS
     {
         $userInput = $request->all();
         array_walk_recursive($userInput, function (&$userInput) {
-            $userInput = strip_tags($userInput);
+            $userInput = strip_tags((string) $userInput);
         });
         $request->merge($userInput);
 
