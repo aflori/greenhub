@@ -2,11 +2,18 @@
 import { useFormStore } from '@/stores/form.js'
 import FormField from './CartFormField.vue'
 
-defineEmits(['next-step', 'prev-step'])
+const emit = defineEmits(['next-step', 'prev-step'])
 
 const formStore = useFormStore()
 const formName = 'adressDelivery'
 const formData = formStore[formName]
+
+function goToNextStepIfDataValid() {
+  const errors = formStore.getInvalidOutputList()
+  if(errors.length === 0) {
+    emit('next-step')
+  }
+}
 </script>
 
 <template>
@@ -15,8 +22,7 @@ const formData = formStore[formName]
     <button
       type="submit"
       class="btn"
-      @click.prevent="$emit('next-step')"
-      :disabled="!formStore.isAdressFormValid"
+      @click.prevent="goToNextStepIfDataValid"
     >
       valider
     </button>

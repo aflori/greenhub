@@ -21,12 +21,14 @@ export const useFormStore = defineStore('formStore', {
       firstName: {
         type: 'text',
         value: '',
-        label: 'prénom'
+        label: 'prénom',
+        validationFormat: /^[\p{L}-]+$/gu,
       },
       lastName: {
         type: 'text',
         value: '',
-        label: 'nom'
+        label: 'nom',
+        validationFormat: /^(de )?[\p{L}-]+$/gu,
       },
       gender: {
         type: 'select',
@@ -36,32 +38,38 @@ export const useFormStore = defineStore('formStore', {
           { value: 'F', name: 'femme' }
         ],
         value: '',
-        label: 'sexe'
+        label: 'sexe',
+        validationFormat: /^[FM]$/,
       },
       adress: {
         type: 'text',
         value: '',
-        label: 'adresse'
+        label: 'adresse',
+        validationFormat: /^(\d+)([\p{L} -]+)$/gu,
       },
       city: {
         type: 'text',
         value: '',
-        label: 'ville'
+        label: 'ville',
+        validationFormat: /^[\p{L}]+$/gu,
       },
       zipCode: {
         type: 'text',
         value: '',
-        label: 'code postal'
+        label: 'code postal',
+        validationFormat: /^[A-Z0-9 -]{3,}$/, // generic regex to avoid complicated one depending of country
       },
       country: {
         type: 'text',
         value: '',
-        label: 'pays'
+        label: 'pays',
+        validationFormat: /^[\p{L}-]+$/gu,
       },
       phoneNumber: {
         type: 'tel',
         value: '',
-        label: 'numéro de téléphone'
+        label: 'numéro de téléphone',
+        validationFormat: /^[0-9 +-]+$/,
       }
     },
     paiementDatas: {
@@ -91,24 +99,12 @@ export const useFormStore = defineStore('formStore', {
       }
       return validate(state.paiementDatas, validationRules)
     },
-    isAdressFormValid: (state) => {
-      const validationRules = {
-        // flag u allow myself to check all letters (not only ASCCI, per exemple 'é' included)
-        // flag g is for considering character of other language (such as korean)
-        firstName: /^[\p{L}-]+$/gu,
-        lastName: /^(de )?[\p{L}-]+$/gu,
-        gender: /^[FM]$/,
-        adress: /^(\d+)([\p{L} -]+)$/gu,
-        city: /^[\p{L}]+$/gu,
-        zipCode: /^[A-Z0-9 -]{3,}$/, // generic regex to avoid complicated one depending of country
-        country: /^[\p{L}-]+$/gu,
-        phoneNumber: /^[0-9 +-]+$/
-      }
-
-      return validate(state.adressDelivery, validationRules)
-    }
   },
-  actions: {}
+  actions: {
+    getInvalidOutputList() {
+      return getErrors(this.adressDelivery)
+    }
+  }
 })
 
 function validate(input, validationRules) {
@@ -123,4 +119,8 @@ function validate(input, validationRules) {
   }
 
   return true
+}
+function getErrors(userInput) {
+
+  return []
 }

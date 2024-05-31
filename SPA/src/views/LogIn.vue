@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 import { useLoggingStore } from '@/stores/loggin'
 
 
-async function redirectIfNotAuthenticated() {
+async function redirectIfAuthenticated() {
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -19,7 +19,7 @@ async function redirectIfNotAuthenticated() {
     router.push({"name": "home"})
   }
 }
-onBeforeMount(redirectIfNotAuthenticated)
+onBeforeMount(redirectIfAuthenticated)
 
 const textToRegister = 'créer un compte'
 const textToLogIn = 'Se connecter'
