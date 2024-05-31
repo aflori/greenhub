@@ -121,6 +121,20 @@ function validate(input, validationRules) {
   return true
 }
 function getErrors(userInput) {
+  const errors = []
 
-  return []
+  const keys = Object.keys(userInput)
+  for(let i=0; i<keys.length; i++) {
+    const key = keys[i]
+    const input = userInput[key]
+    const regex = input.validationFormat
+    const value = input.value
+    const name = input.label
+
+    if(!value.match(regex)) {
+      errors.push(name)
+    }
+  }
+
+  return errors
 }
