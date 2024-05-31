@@ -1,7 +1,25 @@
 <script setup>
 import LogInForm from '@/components/logComponents/logInForm.vue'
 import RegisterForm from '@/components/logComponents/registerForm.vue'
-import { ref } from 'vue'
+import { ref, onBeforeMount } from 'vue'
+import { useRouter } from 'vue-router'
+import { useLoggingStore } from '@/stores/loggin'
+
+
+async function redirectIfNotAuthenticated() {
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  const logger = useLoggingStore();
+  while(logger.isLogged === undefined) {
+    await sleep(100)
+  }
+  if(logger.isLogged) {
+    const router = useRouter();
+    router.push({"name": "home"})
+  }
+}
+onBeforeMount(redirectIfNotAuthenticated)
 
 const textToRegister = 'créer un compte'
 const textToLogIn = 'Se connecter'

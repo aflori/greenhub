@@ -1,12 +1,29 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeMount } from 'vue'
+import { useRouter } from 'vue-router'
 import ListElement from '@/components/CartComponents/CartPosition.vue'
 import CartComposition from '@/components/CartComponents/CartComposition.vue'
 import CartAdressStep from '@/components/CartComponents/CartAdressStep.vue'
 import CartPaymentStep from '@/components/CartComponents/CartPaymentStep.vue'
+import { useLoggingStore } from '@/stores/loggin'
 
 const position = ref(1)
 const texts = ['panier', 'livraison', 'paiement', 'confirmation']
+
+async function redirectIfNotAuthenticated() {
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  const logger = useLoggingStore();
+  while(logger.isLogged === undefined) {
+    await sleep(100)
+  }
+  if(! logger.isLogged) {
+    const router = useRouter();
+    router.push({"name": "log_in"})
+  }
+}
+onBeforeMount(redirectIfNotAuthenticated)
 </script>
 
 <template>
