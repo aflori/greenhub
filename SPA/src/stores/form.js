@@ -132,5 +132,17 @@ function getErrors(userInput) {
 }
 
 function getListOfValue(dataFields) {
-  return [{ label: "test", value: 8}]
+  const listOfValue = []
+
+  const keys = Object.keys(dataFields)
+  for(let i=0; i<keys.length; i++) {
+    const key = keys[i]
+    const objectI = dataFields[key]
+    const value = {
+      'label': objectI.label,
+      'value': objectI.value
+    }
+    listOfValue.push(value)
+  }
+  return listOfValue
 }
