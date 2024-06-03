@@ -105,19 +105,7 @@ export const useFormStore = defineStore('formStore', {
   }
 })
 
-function validate(input, validationRules) {
-  for (const fieldName in validationRules) {
-    //I want the value and not the ref proxy, so i use the .value
-    const valueTested = input[fieldName].value
-    const regExpr = validationRules[fieldName]
 
-    if (!valueTested.match(regExpr)) {
-      return false
-    }
-  }
-
-  return true
-}
 function getErrors(userInput) {
   const errors = []
 
