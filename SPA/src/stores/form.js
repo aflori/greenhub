@@ -101,7 +101,7 @@ export const useFormStore = defineStore('formStore', {
     },
   },
   actions: {
-    getInvalidOutputList() {
+    getInvalidAdressFormField() {
       return getErrors(this.adressDelivery)
     }
   }

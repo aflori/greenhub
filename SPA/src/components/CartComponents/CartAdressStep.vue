@@ -12,7 +12,7 @@ const errors = ref([])
 
 
 function goToNextStepIfDataValid() {
-  const validationsErrors = formStore.getInvalidOutputList()
+  const validationsErrors = formStore.getInvalidAdressFormField()
   
   if(validationsErrors.length === 0) {
     emit('next-step')
