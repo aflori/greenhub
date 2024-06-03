@@ -110,7 +110,13 @@ export const useFormStore = defineStore('formStore', {
     },
 
     async makeOrder(productList) {
+      const requestBody = {
+        "total_amount": null,
+        "facturation_adress": null,
+        "products": getListOfProducts(productList)
+      }
 
+      console.log(requestBody)
       return undefined
     }
   }
@@ -150,4 +156,8 @@ function getListOfValue(dataFields) {
     listOfValue.push(value)
   }
   return listOfValue
+}
+
+function getListOfProducts(productList) {
+  return []
 }
