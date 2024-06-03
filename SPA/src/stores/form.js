@@ -76,33 +76,31 @@ export const useFormStore = defineStore('formStore', {
       cardNumber: {
         type: 'text',
         value: '',
-        label: 'numéro de carte'
+        label: 'numéro de carte',
+        validationFormat: /^(\d{4} ?){4}$/,
       },
       securityCode: {
         type: 'text',
         value: '',
-        label: 'code de sécurité'
+        label: 'code de sécurité',
+        validationFormat: /^(\d{3})$/,
       },
       validationDate: {
         type: 'month',
         value: '',
-        label: "date d'expiration"
+        label: "date d'expiration",
+        validationFormat: /^(0\d|1[0-2])\/(2[4-9]|[3-9]\d)$/,
       }
     }
   }),
   getters: {
-    isPaiementFormValid: (state) => {
-      const validationRules = {
-        cardNumber: /^(\d{4} ?){4}$/,
-        securityCode: /^(\d{3})$/,
-        validationDate: /^(0\d|1[0-2])\/(2[4-9]|[3-9]\d)$/
-      }
-      return validate(state.paiementDatas, validationRules)
-    },
   },
   actions: {
     getInvalidAdressFormField() {
       return getErrors(this.adressDelivery)
+    },
+    getInvalidPaiementFormField() {
+      return getErrors(this.paiementDatas)
     }
   }
 })
