@@ -132,5 +132,5 @@ function getErrors(userInput) {
 }
 
 function getListOfValue(dataFields) {
-  return []
+  return [{ label: "test", value: 8}]
 }
