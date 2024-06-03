@@ -5,6 +5,7 @@ import ListElement from '@/components/CartComponents/CartPosition.vue'
 import CartComposition from '@/components/CartComponents/CartComposition.vue'
 import CartAdressStep from '@/components/CartComponents/CartAdressStep.vue'
 import CartPaymentStep from '@/components/CartComponents/CartPaymentStep.vue'
+import CartConfirmationStep from '@/components/CartComponents/CartConfirmationStep.vue'
 import { useLoggingStore } from '@/stores/loggin'
 
 const position = ref(1)
@@ -32,7 +33,8 @@ onBeforeMount(redirectIfNotAuthenticated)
     <CartComposition @next-step="position++" v-if="position === 1" />
     <CartAdressStep @next-step="position++" @prev-step="position--" v-else-if="position === 2" />
     <CartPaymentStep @next-step="position++" @prev-step="position--" v-else-if="position === 3" />
-
+    <CartConfirmationStep @prev-step="position--" v-else />
+    
     <ul class="steps steps-vertical lg:steps-horizontal">
       <ListElement
         :text="text"
