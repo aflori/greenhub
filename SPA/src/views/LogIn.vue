@@ -5,6 +5,7 @@ import { ref, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useLoggingStore } from '@/stores/loggin'
 
+const router = useRouter();
 
 async function redirectIfAuthenticated() {
   function sleep(ms) {
@@ -15,7 +16,6 @@ async function redirectIfAuthenticated() {
     await sleep(100)
   }
   if(logger.isLogged) {
-    const router = useRouter();
     router.push({"name": "home"})
   }
 }

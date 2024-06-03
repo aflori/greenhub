@@ -10,6 +10,8 @@ import { useLoggingStore } from '@/stores/loggin'
 const position = ref(1)
 const texts = ['panier', 'livraison', 'paiement', 'confirmation']
 
+const router = useRouter();
+
 async function redirectIfNotAuthenticated() {
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -19,7 +21,6 @@ async function redirectIfNotAuthenticated() {
     await sleep(100)
   }
   if(! logger.isLogged) {
-    const router = useRouter();
     router.push({"name": "log_in"})
   }
 }
