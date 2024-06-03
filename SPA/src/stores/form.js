@@ -107,6 +107,11 @@ export const useFormStore = defineStore('formStore', {
     },
     getInvalidPaiementFormField() {
       return getErrors(this.paiementDatas)
+    },
+
+    async makeOrder(productList) {
+
+      return undefined
     }
   }
 })
