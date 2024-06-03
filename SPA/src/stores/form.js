@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import axios from 'axios'
 
 /*
  * store used to generate and store form datas
@@ -122,9 +123,11 @@ export const useFormStore = defineStore('formStore', {
         },
         "products": getListOfProducts(productStore.listProductInCart)
       }
+      const url = "http://localhost:8000/api/orders"
+
+      axios.post(url, requestBody)
 
       console.log(requestBody)
-      return undefined
     }
   }
 })
