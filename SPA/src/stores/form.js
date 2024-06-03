@@ -109,11 +109,18 @@ export const useFormStore = defineStore('formStore', {
       return getErrors(this.paiementDatas)
     },
 
-    async makeOrder(productList) {
+    async makeOrder(productStore) {
+      const roadDatas = this.adressDelivery.adress.value.match(/^(\d+)\s*(.*)\s*/)
+      
       const requestBody = {
-        "total_amount": null,
-        "facturation_adress": null,
-        "products": getListOfProducts(productList)
+        "total_amount": productStore.totalPrice,
+        "facturation_adress": {
+          "road_number": Number(roadDatas[1]),
+          "road_name": roadDatas[2],
+          "city": this.adressDelivery.city.value,
+          "zip_code": this.adressDelivery.zipCode.value,
+        },
+        "products": getListOfProducts(productStore.listProductInCart)
       }
 
       console.log(requestBody)
@@ -159,5 +166,17 @@ function getListOfValue(dataFields) {
 }
 
 function getListOfProducts(productList) {
-  return []
+  const arrayOfProduct = []
+
+  const keys = Object.keys(productList)
+  for(let i=0; i<keys.length; i++) {
+    const key = keys[i]
+    const product = productList[key]
+    
+    arrayOfProduct.push({
+      "id": product.product.id,
+      "quantity": product.quantity
+    })
+  }
+  return arrayOfProduct
 }

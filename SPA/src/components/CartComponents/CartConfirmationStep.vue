@@ -8,7 +8,7 @@ const formStore = useFormStore()
 const cartData = useCartStore()
 
 function makeOrder() {
-    formStore.makeOrder(cartData.listProductInCart)
+    formStore.makeOrder(cartData)
 }
 </script>
 
