@@ -94,6 +94,12 @@ export const useFormStore = defineStore('formStore', {
     }
   }),
   getters: {
+    getFieldList: (state) => {
+      return {
+        "adresse": getListOfValue(state.adressDelivery),
+        "paiement": getListOfValue(state.paiementDatas),
+      }
+    }
   },
   actions: {
     getInvalidAdressFormField() {
@@ -123,4 +129,8 @@ function getErrors(userInput) {
   }
 
   return errors
+}
+
+function getListOfValue(dataFields) {
+  return []
 }
