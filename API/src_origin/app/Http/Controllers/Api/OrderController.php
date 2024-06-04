@@ -148,7 +148,6 @@ function isInvalidGlobalAmount(float $totalAmount, array $productsBuyed, float $
 function isValidGlobalAmount(float $totalAmount, array $productsBuyed, float $shippingFee): bool
 {
     $trueTotalAmount = $shippingFee;
-    $totalAmount = round($totalAmount, 2);
 
     foreach ($productsBuyed as $productBuyed) {
         $product = \App\Models\Product::query()->find($productBuyed['id']);
@@ -156,9 +155,10 @@ function isValidGlobalAmount(float $totalAmount, array $productsBuyed, float $sh
 
         $unitProductPrice = getUnitProductPrice($product);
         $trueTotalAmount += $quantity * $unitProductPrice;
-    }
+            }
 
     $trueTotalAmount = round($trueTotalAmount, 2);
+    $totalAmount = round($totalAmount, 2);
 
     return $trueTotalAmount === $totalAmount;
 }

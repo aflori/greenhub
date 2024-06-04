@@ -36,19 +36,22 @@ function getCorretlyFormatedObject(product) {
             categories: Array, //have to make an array containing the received category
             description: String,
             image: String,
+            vat: Number
         }
     */
   let image = undefined
   if (product.image.length > 0) {
     image = product.image[0]
   }
+
   return {
     id: product.id,
     title: product.name,
     price: product.price.toString() + ' €',
     categories: product.categories,
     description: product.description,
-    image: image
+    image: image,
+    vat: Number(product.vat_rate) * product.price
   }
 }
 
