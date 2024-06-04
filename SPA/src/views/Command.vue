@@ -35,7 +35,7 @@ onBeforeMount(redirectIfNotAuthenticated)
     <CartPaymentStep @next-step="position++" @prev-step="position--" v-else-if="position === 3" />
     <CartConfirmationStep @prev-step="position--" v-else />
     
-    <ul class="steps steps-vertical lg:steps-horizontal">
+    <ul class="steps steps-vertical lg:steps-horizontal" v-if="position>=0 && position<=4">
       <ListElement
         :text="text"
         :stepNumber="index + 1"
