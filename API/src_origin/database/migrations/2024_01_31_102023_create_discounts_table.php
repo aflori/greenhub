@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('discounts', function (Blueprint $table) {
-            $table->uuid("id");
-            $table->float("amount", 7, 2);
-            $table->boolean("is_percentage");
+            $table->uuid('id');
+            $table->float('amount', 7, 2);
+            $table->boolean('is_percentage');
 
-            $table->primary("id");
+            $table->primary('id');
         });
     }
 

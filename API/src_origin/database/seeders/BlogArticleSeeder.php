@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\BlogArticle;
 use App\Models\Product;
-require_once __DIR__ .'/../utility.php';
+use Illuminate\Database\Seeder;
+
+require_once __DIR__.'/../utility.php';
 
 class BlogArticleSeeder extends Seeder
 {
@@ -16,9 +16,9 @@ class BlogArticleSeeder extends Seeder
     public function run(): void
     {
         BlogArticle::factory(25)->create()
-        ->each(
-            createManyToManyRelationships(Product::class, "relatedProducts")
-        );
+            ->each(
+                createManyToManyRelationships(Product::class, 'relatedProducts')
+            );
 
     }
 }

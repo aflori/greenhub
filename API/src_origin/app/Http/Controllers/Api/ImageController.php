@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Image;
+use Illuminate\Http\Request;
 
 class ImageController extends Controller
 {
@@ -20,28 +20,33 @@ class ImageController extends Controller
             $newImage->$columnName = $columnValue;
         }
         $newImage->save();
+
         return $newImage;
     }
 
-    public function show(Image $image ) {
+    public function show(Image $image)
+    {
         return $image;
     }
 
     public function update(Request $request, Image $image)
     {
-        if ( isset($request->id) ) {
-            return response()->json(["error" => "cannot change id"], 404);
+        if (isset($request->id)) {
+            return response()->json(['error' => 'cannot change id'], 404);
         }
 
         foreach ($request->request as $attributeName => $attributeValue) {
             $image->$attributeName = $attributeValue;
         }
         $image->save();
+
         return $image;
     }
 
-    public function destroy(Image $image) {
+    public function destroy(Image $image)
+    {
         $image->delete();
+
         return $image;
     }
 }

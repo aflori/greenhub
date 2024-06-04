@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Product;
 use App\Http\Controllers\Api\Filter\ProductFilter;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoriesFilterRequest;
 use App\Http\Requests\EditOrCreateProductRequest;
-use Illuminate\Support\Facades\Gate;
-
-use App\Http\Resources\ProductResource;
 use App\Http\Resources\ProductCollection;
+use App\Http\Resources\ProductResource;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
@@ -20,7 +19,6 @@ class ProductController extends Controller
      *
      *  the endpoints is made to send back all available products. It can optionnally take in parammetter filtering parammeters
      */
-
     public function index(CategoriesFilterRequest $request)
     {
         $query = Product::query();
@@ -29,7 +27,7 @@ class ProductController extends Controller
         $filterAction = new ProductFilter;
         $filterAction($query, $filteringField);
 
-        $productsListFiltered = $query->get();
+        $productsListFiltered = $query->limit(10)->get();
 
         return new ProductCollection($productsListFiltered);
     }
@@ -41,10 +39,12 @@ class ProductController extends Controller
             $newProduct->$columnName = $columnValue;
         }
         $newProduct->save();
+
         return $newProduct;
     }
 
-    public function show(Product $product ) {
+    public function show(Product $product)
+    {
         return new ProductResource($product);
     }
 
@@ -60,56 +60,63 @@ class ProductController extends Controller
         // $product->save();
         // return $product;
 
-        return [ "success" => true ];
+        return ['success' => true];
     }
 
-    public function destroy(Product $product) {
-        if(Gate::denies('is_admin')) {
-            return response()->json(["error" => "not authorized to delete products"], 401);
+    public function destroy(Product $product)
+    {
+        if (Gate::denies('is_admin')) {
+            return response()->json(['error' => 'not authorized to delete products'], 401);
         }
         $fieldToDetach = [
-            "labels",
-            "categories",
+            'labels',
+            'categories',
         ];
 
         $fieldToDelete = [
-            "comments",
-            "images",
+            'comments',
+            'images',
         ];
 
         cleanRelation($product, $fieldToDetach, $fieldToDelete);
 
         $product->delete();
+
         return $product;
     }
 
-    public function comment(Request $request, Product $product) {
-        $comment = $request->post("comment");
-        return ["comment" => $comment];
+    public function comment(Request $request, Product $product)
+    {
+        $comment = $request->post('comment');
+
+        return ['comment' => $comment];
     }
 }
 
-function cleanRelation(Product $product, array $fieldToDetach, array $fieldToDelete ){
-    foreach( $fieldToDetach as $field) {
+function cleanRelation(Product $product, array $fieldToDetach, array $fieldToDelete)
+{
+    foreach ($fieldToDetach as $field) {
         deleteManyToManyRelation($product, $field);
     }
 
-    foreach( $fieldToDelete as $field) {
+    foreach ($fieldToDelete as $field) {
         deleteSimpleRelation($product, $field);
     }
 }
 
-function deleteSimpleRelation(Product $product, string $relationName) {
+function deleteSimpleRelation(Product $product, string $relationName)
+{
     $entities = $product->$relationName;
-    foreach( $entities as $entity ) {
+    foreach ($entities as $entity) {
         $entity->delete();
     }
 }
 
-function deleteManyToManyRelation(Product $product, string $relationName) {
+function deleteManyToManyRelation(Product $product, string $relationName)
+{
     $entities = $product->$relationName;
 
-    foreach( $entities as $entity) {
+    foreach ($entities as $entity) {
         $id = $entity->id;
         $product->$relationName()->detach($id);
     }

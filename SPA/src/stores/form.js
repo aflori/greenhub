@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import axios from 'axios'
 
 /*
  * store used to generate and store form datas
@@ -21,12 +22,14 @@ export const useFormStore = defineStore('formStore', {
       firstName: {
         type: 'text',
         value: '',
-        label: 'prénom'
+        label: 'prénom',
+        validationFormat: /^[\p{L}-]+$/gu,
       },
       lastName: {
         type: 'text',
         value: '',
-        label: 'nom'
+        label: 'nom',
+        validationFormat: /^(de )?[\p{L}-]+$/gu,
       },
       gender: {
         type: 'select',
@@ -36,91 +39,147 @@ export const useFormStore = defineStore('formStore', {
           { value: 'F', name: 'femme' }
         ],
         value: '',
-        label: 'sexe'
+        label: 'sexe',
+        validationFormat: /^[FM]$/,
       },
       adress: {
         type: 'text',
         value: '',
-        label: 'adresse'
+        label: 'adresse',
+        validationFormat: /^(\d+)([\p{L} -]+)$/gu,
       },
       city: {
         type: 'text',
         value: '',
-        label: 'ville'
+        label: 'ville',
+        validationFormat: /^[\p{L}]+$/gu,
       },
       zipCode: {
         type: 'text',
         value: '',
-        label: 'code postal'
+        label: 'code postal',
+        validationFormat: /^[A-Z0-9 -]{3,}$/, // generic regex to avoid complicated one depending of country
       },
       country: {
         type: 'text',
         value: '',
-        label: 'pays'
+        label: 'pays',
+        validationFormat: /^[\p{L}-]+$/gu,
       },
       phoneNumber: {
         type: 'tel',
         value: '',
-        label: 'numéro de téléphone'
+        label: 'numéro de téléphone',
+        validationFormat: /^[0-9 +-]+$/,
       }
     },
     paiementDatas: {
       cardNumber: {
         type: 'text',
         value: '',
-        label: 'numéro de carte'
+        label: 'numéro de carte',
+        validationFormat: /^(\d{4} ?){4}$/,
       },
       securityCode: {
         type: 'text',
         value: '',
-        label: 'code de sécurité'
+        label: 'code de sécurité',
+        validationFormat: /^(\d{3})$/,
       },
       validationDate: {
         type: 'month',
         value: '',
-        label: "date d'expiration"
+        label: "date d'expiration",
+        validationFormat: /^(0\d|1[0-2])\/(2[4-9]|[3-9]\d)$/,
       }
     }
   }),
   getters: {
-    isPaiementFormValid: (state) => {
-      const validationRules = {
-        cardNumber: /^(\d{4} ?){4}$/,
-        securityCode: /^(\d{3})$/,
-        validationDate: /^(0\d|1[0-2])\/(2[4-9]|[3-9]\d)$/
+    getFieldList: (state) => {
+      return {
+        "adresse": getListOfValue(state.adressDelivery),
+        "paiement": getListOfValue(state.paiementDatas),
       }
-      return validate(state.paiementDatas, validationRules)
-    },
-    isAdressFormValid: (state) => {
-      const validationRules = {
-        // flag u allow myself to check all letters (not only ASCCI, per exemple 'é' included)
-        // flag g is for considering character of other language (such as korean)
-        firstName: /^[\p{L}-]+$/gu,
-        lastName: /^(de )?[\p{L}-]+$/gu,
-        gender: /^[FM]$/,
-        adress: /^(\d+)([\p{L} -]+)$/gu,
-        city: /^[\p{L}]+$/gu,
-        zipCode: /^[A-Z0-9 -]{3,}$/, // generic regex to avoid complicated one depending of country
-        country: /^[\p{L}-]+$/gu,
-        phoneNumber: /^[0-9 +-]+$/
-      }
-
-      return validate(state.adressDelivery, validationRules)
     }
   },
-  actions: {}
+  actions: {
+    getInvalidAdressFormField() {
+      return getErrors(this.adressDelivery)
+    },
+    getInvalidPaiementFormField() {
+      return getErrors(this.paiementDatas)
+    },
+
+    async makeOrder(productStore) {
+      const roadDatas = this.adressDelivery.adress.value.match(/^(\d+)\s*(.*)\s*/)
+      
+      const requestBody = {
+        "total_amount": productStore.totalPrice,
+        "facturation_adress": {
+          "road_number": Number(roadDatas[1]),
+          "road_name": roadDatas[2],
+          "city": this.adressDelivery.city.value,
+          "zip_code": this.adressDelivery.zipCode.value,
+        },
+        "products": getListOfProducts(productStore.listProductInCart)
+      }
+      const url = "http://localhost:8000/api/orders"
+
+      axios.post(url, requestBody)
+
+      console.log(requestBody)
+    }
+  }
 })
 
-function validate(input, validationRules) {
-  for (const fieldName in validationRules) {
-    //I want the value and not the ref proxy, so i use the .value
-    const valueTested = input[fieldName].value
-    const regExpr = validationRules[fieldName]
 
-    if (!valueTested.match(regExpr)) {
-      return false
+function getErrors(userInput) {
+  const errors = []
+
+  const keys = Object.keys(userInput)
+  for(let i=0; i<keys.length; i++) {
+    const key = keys[i]
+    const input = userInput[key]
+    const regex = input.validationFormat
+    const value = input.value
+    const name = input.label
+
+    if(!value.match(regex)) {
+      errors.push(name)
     }
   }
 
-  return true
+  return errors
+}
+
+function getListOfValue(dataFields) {
+  const listOfValue = []
+
+  const keys = Object.keys(dataFields)
+  for(let i=0; i<keys.length; i++) {
+    const key = keys[i]
+    const objectI = dataFields[key]
+    const value = {
+      'label': objectI.label,
+      'value': objectI.value
+    }
+    listOfValue.push(value)
+  }
+  return listOfValue
+}
+
+function getListOfProducts(productList) {
+  const arrayOfProduct = []
+
+  const keys = Object.keys(productList)
+  for(let i=0; i<keys.length; i++) {
+    const key = keys[i]
+    const product = productList[key]
+    
+    arrayOfProduct.push({
+      "id": product.product.id,
+      "quantity": product.quantity
+    })
+  }
+  return arrayOfProduct
 }

@@ -23,18 +23,17 @@ class CategoriesFilterRequest extends FormRequest
     {
         return [
             // filter product by its brand name
-            "brand" => "nullable|exists:brands,name",
+            'brand' => 'nullable|exists:brands,name',
             // filter product by one of its category name
-            "category" => "nullable|exists:categories,name",
+            'category' => 'nullable|exists:categories,name',
             // filter product by one of its labels name
-            "label" => "nullable|exists:labels,name",
+            'label' => 'nullable|exists:labels,name',
             // filter product list by product containing that string
-            "name" => "nullable|regex:/^[\pL\s]+$/u",
+            'name' => "nullable|regex:/^[\pL\s]+$/u",
             // filter product wether it has a discount
-            "discount" => "nullable|boolean",
+            'discount' => 'nullable|boolean',
             // filter product by a minimal environment impact and sort it by its values
-            "environmentImpact" => "nullable|missing_with:rating|numeric|max:9|min:0",
-
+            'environmentImpact' => 'nullable|missing_with:rating|numeric|max:9|min:0',
 
             //removed as this one need some database change
             // "rating" => "nullable|missing_with:environmentImpact|numeric|max:9|min:0",

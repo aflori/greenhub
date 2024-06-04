@@ -3,44 +3,48 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 // use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 // class User extends Model
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-
     public $incrementing = false;
+
     // use Uuid instead of usual integer incremental ID
     use HasUuids;
 
     //relationships
     public function comments(): HasMany
     {
-        return $this->hasMany(Comment::class, "author_id");
+        return $this->hasMany(Comment::class, 'author_id');
     }
+
     public function orders(): HasMany
     {
-        return $this->hasMany(Order::class, "buyer_id");
+        return $this->hasMany(Order::class, 'buyer_id');
     }
-    public function company():BelongsTo
+
+    public function company(): BelongsTo
     {
         return $this->belongsTo(Comment::class);
     }
+
     public function registeredAdress(): BelongsToMany
     {
-        return $this->belongsToMany(Adress::class, "registered_adresses");
+        return $this->belongsToMany(Adress::class, 'registered_adresses');
     }
+
     public function profilePicture(): MorphMany
     {
         return $this->morphMany(Image::class, __FUNCTION__, 'table', 'table_key');
@@ -76,8 +80,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    static protected $rolesName = ["admin", "company", "client"];
-    static public function getRoleNames(): array
+    protected static $rolesName = ['admin', 'company', 'client'];
+
+    public static function getRoleNames(): array
     {
         return User::$rolesName;
     }

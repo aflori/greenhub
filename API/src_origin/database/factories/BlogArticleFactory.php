@@ -17,8 +17,8 @@ class BlogArticleFactory extends Factory
     public function definition(): array
     {
         return [
-            "title" => fake()->word(),
-            "content" => fake()->paragraph(5, false)
+            'title' => fake()->word(),
+            'content' => fake()->paragraph(5, false),
         ];
     }
 }
