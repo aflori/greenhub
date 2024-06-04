@@ -51,7 +51,8 @@ function getCorretlyFormatedObject(product) {
     categories: product.categories,
     description: product.description,
     image: image,
-    vat: Number(product.vat_rate) * product.price
+    vat: Number(product.vat_rate) * product.price,
+    totalPrice: product.price * (1 + Number(product.vat_rate))
   }
 }
 
@@ -126,6 +127,6 @@ export const useProductListStore = defineStore('productList', () => {
     changeFilter,
     loadOnlyOnce,
     raw_data,
-    publishComment
+    publishComment,
   }
 })

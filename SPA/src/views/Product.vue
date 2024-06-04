@@ -34,6 +34,13 @@ const commentContent = ref('')
 function publishComment() {
   productStore.publishComment(props.id, commentContent.value)
 }
+
+function roundPrice(price) {
+  price *= 100
+  price = Math.round(price)
+  price /= 100
+  return price
+}
 </script>
 
 <template>
@@ -54,7 +61,10 @@ function publishComment() {
         <p>{{ product.description }}</p>
         <div class="card-actions justify-between">
           <div>
-            <p>{{ product.price }}</p>
+            <p>prix: {{ product.price }}</p><p> tva: {{ roundPrice(product.vat) }} €</p>
+          </div>
+          <div>
+            <p> prix total: {{ roundPrice(product.totalPrice)}} €</p>
           </div>
           <BaketInput
             :numberOfProduct="numberOfProduct"
