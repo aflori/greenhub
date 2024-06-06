@@ -6,7 +6,12 @@ import { ref } from 'vue'
 const router = useRouter()
 
 function returnToHome() {
-  router.go(1)
+  if (window.history.length !== 0) {
+    router.go(-1)
+    return
+  }
+
+  router.push({"name": "log_in"})
 }
 
 const logData = useLoggingStore()
