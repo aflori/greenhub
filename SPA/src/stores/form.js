@@ -105,6 +105,10 @@ export const useFormStore = defineStore('formStore', {
       const result = await axios.post(url, requestBody)
       this.order_id = result.data.data.id
       console.log(result.data.data.id, this.order_id)
+    },
+
+    async startPayment() {
+      
     }
   }
 })

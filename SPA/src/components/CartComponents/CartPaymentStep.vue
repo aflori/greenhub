@@ -1,14 +1,15 @@
 <script setup>
 import { onMounted } from 'vue'
-// import { useFormStore } from '@/stores/form.js'
-import FormField from './CartFormField.vue'
+import { useFormStore } from '@/stores/form.js'
+// import FormField from './CartFormField.vue'
 
 defineEmits(['prev-step'])
-// const formStore = useFormStore()
 
-// onMounted( () => {
-//   const paymentElement = elements.
-// })
+const formStore = useFormStore()
+
+onMounted(() => {
+  
+})
 </script>
 
 <template>
