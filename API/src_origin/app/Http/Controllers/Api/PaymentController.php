@@ -12,6 +12,7 @@ use Stripe\Stripe as StripeLogger;
 class PaymentController extends Controller
 {
     public function create(Request $request, Order $order) {
+        StripeLogger::setApiKey(config('stripe.stripe_secret_key'));
 
         return [];
     }
