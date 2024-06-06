@@ -9,7 +9,7 @@ import CartConfirmationStep from '@/components/CartComponents/CartConfirmationSt
 import { useLoggingStore } from '@/stores/loggin'
 
 const position = ref(1)
-const texts = ['panier', 'livraison', 'paiement', 'confirmation']
+const texts = ['panier', 'livraison', 'confirmation', 'paiement']
 
 const router = useRouter();
 
@@ -32,8 +32,8 @@ onBeforeMount(redirectIfNotAuthenticated)
   <main>
     <CartComposition @next-step="position++" v-if="position === 1" />
     <CartAdressStep @next-step="position++" @prev-step="position--" v-else-if="position === 2" />
-    <CartPaymentStep @next-step="position++" @prev-step="position--" v-else-if="position === 3" />
-    <CartConfirmationStep @prev-step="position--" v-else />
+    <CartConfirmationStep @next-step="position++" @prev-step="position--" v-else-if="position === 3"  />
+    <CartPaymentStep  @prev-step="position--" v-else />
     
     <ul class="steps steps-vertical lg:steps-horizontal" v-if="position>=0 && position<=4">
       <ListElement

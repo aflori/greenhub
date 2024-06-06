@@ -1,38 +1,23 @@
 <script setup>
-import { ref } from 'vue'
-import { useFormStore } from '@/stores/form.js'
+import { onMounted } from 'vue'
+// import { useFormStore } from '@/stores/form.js'
 import FormField from './CartFormField.vue'
 
-const emit = defineEmits(['next-step', 'prev-step'])
-const formStore = useFormStore()
-const formName = 'paiementDatas'
-const formData = formStore[formName]
-const errors = ref([])
+defineEmits(['prev-step'])
+// const formStore = useFormStore()
 
-
-function goToNextStepIfDataValid() {
-  const validationsErrors = formStore.getInvalidPaiementFormField()
-  
-  if(validationsErrors.length === 0) {
-    emit('next-step')
-    return
-  }
-
-  errors.value = validationsErrors
-}
+// onMounted( () => {
+//   const paymentElement = elements.
+// })
 </script>
 
 <template>
   <form>
-    <p v-if="errors.length > 0" class="error">
-      Les champs du formulaire sont invalides.
-      Veuillez corriger les champs <span v-for="e in errors"> {{ e }}, </span> 
-    </p>
-    <FormField :label="label" :form="formName" v-for="(field, label) in formData" :key="label" />
+    <div id="stripe-payment-form"></div>
     <button
       type="submit"
       class="btn"
-      @click.prevent="goToNextStepIfDataValid"
+      @click.prevent
     >
       valider
     </button>

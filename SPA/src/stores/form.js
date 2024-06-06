@@ -73,41 +73,18 @@ export const useFormStore = defineStore('formStore', {
         validationFormat: /^[0-9 +-]+$/,
       }
     },
-    paiementDatas: {
-      cardNumber: {
-        type: 'text',
-        value: '',
-        label: 'numéro de carte',
-        validationFormat: /^(\d{4} ?){4}$/,
-      },
-      securityCode: {
-        type: 'text',
-        value: '',
-        label: 'code de sécurité',
-        validationFormat: /^(\d{3})$/,
-      },
-      validationDate: {
-        type: 'month',
-        value: '',
-        label: "date d'expiration",
-        validationFormat: /^(0\d|1[0-2])\/(2[4-9]|[3-9]\d)$/,
-      }
-    }
+    order_id: null
   }),
   getters: {
     getFieldList: (state) => {
       return {
-        "adresse": getListOfValue(state.adressDelivery),
-        "paiement": getListOfValue(state.paiementDatas),
+        "adresse": getListOfValue(state.adressDelivery)
       }
     }
   },
   actions: {
     getInvalidAdressFormField() {
       return getErrors(this.adressDelivery)
-    },
-    getInvalidPaiementFormField() {
-      return getErrors(this.paiementDatas)
     },
 
     async makeOrder(productStore) {
@@ -125,9 +102,9 @@ export const useFormStore = defineStore('formStore', {
       }
       const url = "http://localhost:8000/api/orders"
 
-      axios.post(url, requestBody)
-
-      console.log(requestBody)
+      const result = await axios.post(url, requestBody)
+      this.order_id = result.data.data.id
+      console.log(result.data.data.id, this.order_id)
     }
   }
 })

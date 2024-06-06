@@ -2,13 +2,17 @@
 
 import { useFormStore } from '@/stores/form.js'
 import { useCartStore } from '@/stores/cart.js'
-const emit = defineEmits(['prev-step'])
+
+const emit = defineEmits(['prev-step', 'next-step'])
 
 const formStore = useFormStore()
 const cartData = useCartStore()
 
 function makeOrder() {
     formStore.makeOrder(cartData)
+    .then(() =>{
+        emit('next-step')
+    } )
 }
 </script>
 
