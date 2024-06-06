@@ -29,6 +29,9 @@ class PaymentController extends Controller
 
         $payment->save();
 
-        return ["client_id" => $paymentIntent->client_secret];
+        return [
+            "client_id" => $paymentIntent->client_secret,
+            "stripe_key" => config('stripe.stripe_public_key')
+        ];
     }
 }

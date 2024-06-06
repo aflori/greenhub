@@ -6,9 +6,28 @@ import { useFormStore } from '@/stores/form.js'
 defineEmits(['prev-step'])
 
 const formStore = useFormStore()
+let paymentId = null
+let stripe = null;
+let element = null;
 
 onMounted(() => {
-  
+  formStore
+  .startPayment()
+  .then((response) => {
+    // console.log(response.data)
+    const apiResponse = response.data
+    const stripePublicKey = apiResponse.stripe_key
+    stripe = Stripe(stripePublicKey)
+    paymentId = apiResponse.client_id
+
+    const options = {
+      clientSecret: paymentId
+    }
+    element = stripe.elements(options)
+
+    const paymentElement = element.create('payment')
+    paymentElement.mount("#stripe-payment-form")
+  })
 })
 </script>
 
