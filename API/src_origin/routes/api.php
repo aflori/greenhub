@@ -40,6 +40,8 @@ Route::apiResource('users', UserController::class);
 Route::apiResource('articles', BlogArticleController::class);
 Route::apiResource('companies', CompanyController::class);
 
+Route::post("/payment/create/{order}", [PaymentController::class, 'create' ]);
+
 Route::middleware('isAdmin')->group(function () {
     Route::apiResource('adresses', AdressController::class);
     Route::apiResource('brands', BrandController::class);
