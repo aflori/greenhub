@@ -6,7 +6,7 @@ import { ref } from 'vue'
 const router = useRouter()
 
 function returnToHome() {
-  router.push({ name: 'home' })
+  router.go(1)
 }
 
 const logData = useLoggingStore()

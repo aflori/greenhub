@@ -29,12 +29,12 @@ class RegisteredUserController extends Controller
         ]);
 
         $user = new User;
-        $user->first_name = $request->post("first_name");
-        $user->last_name = $request->post("last_name");
-        $user->pseudoname = $request->post("pseudoname");
-        $user->email = $request->post("email");
-        $user->password = Hash::make($request->post("password"));
-        $user->role = "client";
+        $user->first_name = $request->post('first_name');
+        $user->last_name = $request->post('last_name');
+        $user->pseudoname = $request->post('pseudoname');
+        $user->email = $request->post('email');
+        $user->password = Hash::make($request->post('password'));
+        $user->role = 'client';
 
         $user->save();
 

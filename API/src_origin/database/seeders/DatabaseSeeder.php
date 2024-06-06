@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CommentSeeder::class,
             OrderSeeder::class,
-            LastAssociationTableSeeder::class
+            LastAssociationTableSeeder::class,
         ]);
     }
 }

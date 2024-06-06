@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('labels_has_products', function (Blueprint $table) {
-            $table->foreignUuid("product_id")->constrained();
-            $table->foreignUuid("label_id")->constrained();
+            $table->foreignUuid('product_id')->constrained();
+            $table->foreignUuid('label_id')->constrained();
 
-            $table->primary(["product_id", "label_id"]);
+            $table->primary(['product_id', 'label_id']);
         });
     }
 

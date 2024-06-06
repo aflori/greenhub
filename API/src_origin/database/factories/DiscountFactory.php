@@ -17,12 +17,13 @@ class DiscountFactory extends Factory
     public function definition(): array
     {
         $attributes = [
-            "amount" => 1+fake()->randomNumber(2, false),
-            "is_percentage" => fake()->boolean(),
+            'amount' => 1 + fake()->randomNumber(2, false),
+            'is_percentage' => fake()->boolean(),
         ];
-        if ($attributes["is_percentage"]) {
-            $attributes["amount"] /= 100.0;
+        if ($attributes['is_percentage']) {
+            $attributes['amount'] /= 100.0;
         }
+
         return $attributes;
     }
 }

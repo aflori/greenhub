@@ -9,6 +9,7 @@ for reference, product object has to be on the form of
     categories: Array,
     description: String,
     image: String,
+    vat: Number, 
 }
 */
 export const useCartStore = defineStore('cart', {
@@ -39,13 +40,6 @@ export const useCartStore = defineStore('cart', {
       function productAlreadyInCart(product, cart) {
         return cart[product.id] != undefined
       }
-      function getPriceInString(price) {
-        return price.slice(0, -2)
-      }
-      function getUnitPrice(price) {
-        const unitPriceString = getPriceInString(price) //remove currency symbole
-        return Number(unitPriceString) //number conversion
-      }
 
       if (productAlreadyInCart(product, this.listProductInCart)) {
         const cartEntry = this.listProductInCart[product.id]
@@ -54,7 +48,7 @@ export const useCartStore = defineStore('cart', {
 
         this.totalPrice += quantity * cartEntry.unitPrice
       } else {
-        const unitPrice = getUnitPrice(product.price)
+        const unitPrice = product.totalPrice
         const cartEntry = {
           product: product,
           quantity: quantity,

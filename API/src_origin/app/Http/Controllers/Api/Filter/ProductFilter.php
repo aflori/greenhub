@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\Filter;
 
 class ProductFilter
@@ -18,10 +19,10 @@ class ProductFilter
         $filterAction($productList, $filterValue);
     }
 
-    function __invoke($productList, array $filtersList) {
+    public function __invoke($productList, array $filtersList)
+    {
         foreach ($filtersList as $filterType => $filterValue) {
             $this->doFilter($productList, $filterType, $filterValue);
         }
     }
-
 }

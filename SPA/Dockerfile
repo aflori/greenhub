@@ -1,7 +1,7 @@
 FROM node:21-alpine3.19 as build-step
 
 WORKDIR /home/node/
-COPY ./src2/ .
+COPY ./src_depl/ .
 
 RUN npm install\
  && npm run build

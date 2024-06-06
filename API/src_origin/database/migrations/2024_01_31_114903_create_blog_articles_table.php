@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('blog_articles', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->string("title");
-            $table->text("content");
+            $table->uuid('id')->primary();
+            $table->string('title');
+            $table->text('content');
 
         });
     }

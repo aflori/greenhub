@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use App\Policies\UserRightPolicy;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use App\Policies\UserRightPolicy;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -28,17 +28,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        ResetPassword::createUrlUsing(function (object $notifiable, string $token) {
-            return config('app.frontend_url')."/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}";
-        });
+        ResetPassword::createUrlUsing(fn(object $notifiable, string $token) => config('app.frontend_url')."/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}");
 
-        Gate::define('user_check', function(User $user){
-            return Auth::check();
-        });
+        Gate::define('user_check', fn(User $user) => Auth::check());
 
-        Gate::define('is_admin', function (User $user){
-            return $user->role==="admin";
-        });
+        Gate::define('is_admin', fn(User $user) => $user->role === 'admin');
 
     }
 }

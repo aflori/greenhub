@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use App\Models\BlogArticle;
 use App\Models\Comment;
 use App\Models\Company;
-use App\Models\BlogArticle;
 use App\Models\Product;
+use Illuminate\Database\Seeder;
 
 class CommentSeeder extends Seeder
 {
@@ -17,13 +16,14 @@ class CommentSeeder extends Seeder
     public function run(): void
     {
         Comment::factory(70)->create()->
-        each( actionToCreatePolymorphicTable() );
+        each(actionToCreatePolymorphicTable());
     }
 }
-function actionToCreatePolymorphicTable(): callable {
+function actionToCreatePolymorphicTable(): callable
+{
     return function (Comment $comment) {
         createPolymorphicTable($comment,
-                [ Company::class, BlogArticle::class, Product::class],
-                "coment_on_table", "table_key" );
+            [Company::class, BlogArticle::class, Product::class],
+            'coment_on_table', 'table_key');
     };
 }

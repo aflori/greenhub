@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Auth\Access\AuthorizationException;
 
 class EditOrCreateProductRequest extends FormRequest
 {
@@ -28,7 +28,8 @@ class EditOrCreateProductRequest extends FormRequest
         ];
     }
 
-    protected function failedAuthorization() {
-        throw new AuthorizationException("You need to have admin rigths to do this");
+    protected function failedAuthorization()
+    {
+        throw new AuthorizationException('You need to have admin rigths to do this');
     }
 }
