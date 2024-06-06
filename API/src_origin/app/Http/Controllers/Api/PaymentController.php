@@ -14,6 +14,21 @@ class PaymentController extends Controller
     public function create(Request $request, Order $order) {
         StripeLogger::setApiKey(config('stripe.stripe_secret_key'));
 
-        return [];
+        $totalAmount = 100* $order->total_price;
+        // $totalAmount = (int) $totalAmount;
+
+        $paymentIntent = PaymentIntent::create([
+            'amount' => (int) $totalAmount,
+            'currency' => 'EUR',
+        ]);
+
+        $payment = new Payment();
+        $payment->stripe_id = $paymentIntent->id;
+        $payment->payment_state = "waiting";
+        $payment->order_id = $order->id;
+
+        $payment->save();
+
+        return ["client_id" => $paymentIntent->client_secret];
     }
 }
