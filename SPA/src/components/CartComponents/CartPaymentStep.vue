@@ -29,6 +29,24 @@ onMounted(() => {
     paymentElement.mount("#stripe-payment-form")
   })
 })
+
+async function submiPayment() {
+
+  const body = {};
+  try {
+    stripe.confirmPayment({
+      elements: element,
+      redirect: "if_required"
+    });
+
+    body.success = true;
+  }
+  catch {
+    body.success = false;
+  }
+
+  formStore.sendPaymentConfirmation(body, paymentId);
+}
 </script>
 
 <template>
@@ -37,7 +55,7 @@ onMounted(() => {
     <button
       type="submit"
       class="btn"
-      @click.prevent
+      @click.prevent="submiPayment"
     >
       valider
     </button>

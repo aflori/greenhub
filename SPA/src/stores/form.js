@@ -110,6 +110,10 @@ export const useFormStore = defineStore('formStore', {
     async startPayment() {
       const payment = axios.post("http://localhost:8000/api/payment/create/" + this.order_id, {})
       return payment;
+    },
+
+    async sendPaymentConfirmation(body, paymentId) {
+      axios.patch("http://localhost:8000/api/payment/confirm/" + paymentId, body)
     }
   }
 })
