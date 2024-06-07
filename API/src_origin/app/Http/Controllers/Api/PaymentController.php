@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\Payment;
 use App\Models\Order;
 use Stripe\PaymentIntent;
@@ -26,6 +27,7 @@ class PaymentController extends Controller
         $payment->stripe_id = $paymentIntent->id;
         $payment->payment_state = "waiting";
         $payment->order_id = $order->id;
+        $payment->client_id = $paymentIntent->client_secret;
 
         $payment->save();
 
@@ -34,8 +36,21 @@ class PaymentController extends Controller
             "stripe_key" => config('stripe.stripe_public_key')
         ];
     }
-    public function confirm(Request $request,string $client_id ){
-        dd($request, $client_id);
-        return [];
+    public function confirm(Request $request, string $client_id ): Response{
+        StripeLogger::setApiKey(config('stripe.stripe_secret_key'));
+        $payment = Payment::where("client_id", $client_id)->first();
+        // dd($request, $client_id);
+        $paymentIntent = PaymentIntent::retrieve($payment->stripe_id);
+
+        if ($paymentIntent->status === "succeeded") {
+            $payment->payment_state = "payé";
+        }
+        else {
+            $payment->payment_state = "échoué";
+
+        }
+        $payment->client_id = null;
+        $payment->save();
+        return response()->noContent();
     }
 }
