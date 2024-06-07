@@ -34,4 +34,8 @@ class PaymentController extends Controller
             "stripe_key" => config('stripe.stripe_public_key')
         ];
     }
+    public function confirm(Request $request,string $client_id ){
+        dd($request, $client_id);
+        return [];
+    }
 }
