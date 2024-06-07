@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->timestamps();
-            $table->string('stripe_id', 100);
+            $table->string('stripe_id', 150);
+            $table->string('client_id', 150)->nullable();
             $table->string('payment_state', 50); //"confirmed", "waiting", "refused" or "setup"
             $table->foreignUuid('order_id')->constrained();
         });
