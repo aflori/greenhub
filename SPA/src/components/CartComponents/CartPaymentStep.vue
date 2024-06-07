@@ -1,38 +1,61 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted } from 'vue'
 import { useFormStore } from '@/stores/form.js'
-import FormField from './CartFormField.vue'
+// import FormField from './CartFormField.vue'
 
-const emit = defineEmits(['next-step', 'prev-step'])
+defineEmits(['prev-step'])
+
 const formStore = useFormStore()
-const formName = 'paiementDatas'
-const formData = formStore[formName]
-const errors = ref([])
+let paymentId = null
+let stripe = null;
+let element = null;
 
+onMounted(() => {
+  formStore
+  .startPayment()
+  .then((response) => {
+    // console.log(response.data)
+    const apiResponse = response.data
+    const stripePublicKey = apiResponse.stripe_key
+    stripe = Stripe(stripePublicKey)
+    paymentId = apiResponse.client_id
 
-function goToNextStepIfDataValid() {
-  const validationsErrors = formStore.getInvalidPaiementFormField()
-  
-  if(validationsErrors.length === 0) {
-    emit('next-step')
-    return
+    const options = {
+      clientSecret: paymentId
+    }
+    element = stripe.elements(options)
+
+    const paymentElement = element.create('payment')
+    paymentElement.mount("#stripe-payment-form")
+  })
+})
+
+async function submiPayment() {
+
+  const body = {};
+  try {
+    stripe.confirmPayment({
+      elements: element,
+      redirect: "if_required"
+    });
+
+    body.success = true;
+  }
+  catch {
+    body.success = false;
   }
 
-  errors.value = validationsErrors
+  formStore.sendPaymentConfirmation(body, paymentId);
 }
 </script>
 
 <template>
   <form>
-    <p v-if="errors.length > 0" class="error">
-      Les champs du formulaire sont invalides.
-      Veuillez corriger les champs <span v-for="e in errors"> {{ e }}, </span> 
-    </p>
-    <FormField :label="label" :form="formName" v-for="(field, label) in formData" :key="label" />
+    <div id="stripe-payment-form"></div>
     <button
       type="submit"
       class="btn"
-      @click.prevent="goToNextStepIfDataValid"
+      @click.prevent="submiPayment"
     >
       valider
     </button>

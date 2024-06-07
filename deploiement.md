@@ -32,7 +32,7 @@ In my terminal, I make the virtual mchine register my ssh key (if not already):
 ssh-copy-id <user>@<id>
 ```
 
-Then I update the configurations:
+Then I update the configurations (to adapt if we use CI/CD from github action or similar):
 ```
 PasswordAuthentication no
 ChallengeResponseAuthentication no
@@ -92,7 +92,7 @@ services:
       - "traefik.http.services.nginx.loadbalancer.server.port=80"
 
   traefik:
-    image: traefik:v2.11
+    image: traefik:v3.0
     restart: always
     ports:
       - 80:80
@@ -240,6 +240,9 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.to-back.entrypoints=websecure"
       - "traefik.http.routers.to-back-unsecure.entrypoints=web"
+      # I saw that syntaxe to fusion the two lines up:
+      # - "traefiki.http.routers.to-back.entrypoints=websecure,web"
+      # Throughit need test (and allow the two line below to also be fusionned)
       - "traefik.http.routers.to-back.rule=Host(`api.domain.name`)"
       - "traefik.http.routers.to-back-unsecure.rule=Host(`api.domain.name`)"
       - "traefik.http.routers.to-back.tls=true"

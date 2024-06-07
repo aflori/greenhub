@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\OrderController;
 // use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,9 @@ Route::apiResource('orders', OrderController::class)->only(['store'])->middlewar
 Route::apiResource('users', UserController::class);
 Route::apiResource('articles', BlogArticleController::class);
 Route::apiResource('companies', CompanyController::class);
+
+Route::post("/payment/create/{order}", [PaymentController::class, 'create' ]);
+Route::patch("/payment/confirm/{client_id}", [PaymentController::class, 'confirm']);
 
 Route::middleware('isAdmin')->group(function () {
     Route::apiResource('adresses', AdressController::class);
